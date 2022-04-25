@@ -1,0 +1,2 @@
+https://dev.mysql.com/downloads/connector/python/
+https://dev.mysql.com/downloads/installer/
