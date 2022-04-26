@@ -4,13 +4,18 @@ from .forms import EncuestaSatisfaccionForm
 # Create your views here.
 
 
-def home(request):
-
+def encuesta_satisfaccion_view(request):
     if request.method == 'POST':
-        form = EncuestaSatisfaccionForm(data=request.POST)
-        if form.is_valid():
-            form.save()
+        print('TEST')
+        for value in request.POST:
+            # print(value)
+            print(request.POST['respuesta1'])
+        # form = EncuestaSatisfaccionForm(data=request.POST)
+        # if form.is_valid():
+            # form.save()
         # data['form'] = form
     else:
-        form = EncuestaSatisfaccionForm()
-    return render(request, 'index.html',{'form':form})
+        print('nopost')
+        # form = EncuestaSatisfaccionForm()
+    # return render(request, 'index.html',{'form':form})
+    return render(request, 'index.html')

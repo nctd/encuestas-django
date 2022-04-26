@@ -26,28 +26,33 @@
                     </button>
                 </div> -->
                 <div class="col-md-auto ms-auto d-print-none">
-                    <div class="btn-list">
-                        <a href="#" class="btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up"
-                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M9 13l-4 -4l4 -4m-4 4h11a4 4 0 0 1 0 8h-1"></path>
-                            </svg>
-                            Atrás
-                        </a>
-                        <a href="#" class="btn btn-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" width="24"
-                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                                <path d="M21 3l-6.5 18a0.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a0.55 .55 0 0 1 0 -1l18 -6.5">
-                                </path>
-                            </svg>
-                            Enviar
-                        </a>
-                    </div>
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="btn-list">
+                            <button class="btn">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="icon icon-tabler icon-tabler-arrow-back-up" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M9 13l-4 -4l4 -4m-4 4h11a4 4 0 0 1 0 8h-1"></path>
+                                </svg>
+                                Atrás
+                            </button>
+
+                            <button type="submit" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    <path
+                                        d="M21 3l-6.5 18a0.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a0.55 .55 0 0 1 0 -1l18 -6.5">
+                                    </path>
+                                </svg>
+                                Enviar
+                            </button>
+                        </div>
 
                 </div>
             </div>
@@ -135,28 +140,30 @@
                                 <div class="row mb-3">
                                     <div class="col-sm-2">
                                         <label class="radio">
-                                            <input type="radio">
+                                            <input type="radio" name="respuesta1" id="respuesta1" value="Deficiente">
                                             Deficiente
                                         </label>
                                     </div>
                                     <div class="col-md-2">
                                         <label class="radio">
-                                            <input type="radio"> Malo
+                                            <input type="radio" name="respuesta1" id="respuesta1" value="Malo">
+                                            Malo
                                         </label>
                                     </div>
                                     <div class="col-md-2">
                                         <label class="radio">
-                                            <input type="radio" name="pregunta1" id="preguntac" value="NA"> Regular
+                                            <input type="radio" name="respuesta1" id="respuesta1" value="Regular">
+                                            Regular
                                         </label>
                                     </div>
                                     <div class="col-md-2">
                                         <label class="radio">
-                                            <input type="radio" name="pregunta1" id="preguntac" value="NA"> Bueno
+                                            <input type="radio" name="respuesta1" id="respuesta1" value="Bueno"> Bueno
                                         </label>
                                     </div>
                                     <div class="col-md-2">
                                         <label class="radio">
-                                            <input type="radio" name="pregunta1" id="preguntac" value="NA">
+                                            <input type="radio" name="respuesta1" id="respuesta1" value="Excelente">
                                             Excelente
                                         </label>
                                     </div>
@@ -169,28 +176,29 @@
                                 <div class="row">
                                     <div class="col-sm-2">
                                         <label class="radio">
-                                            <input type="radio">
+                                            <input type="radio" name="respuesta2" id="respuesta2" value="Deficiente">
                                             Deficiente
                                         </label>
                                     </div>
                                     <div class="col-md-2">
                                         <label class="radio">
-                                            <input type="radio"> Malo
+                                            <input type="radio" name="respuesta2" id="respuesta2" value="Malo"> Malo
                                         </label>
                                     </div>
                                     <div class="col-md-2">
                                         <label class="radio">
-                                            <input type="radio" name="pregunta1" id="preguntac" value="NA"> Regular
+                                            <input type="radio" name="respuesta2" id="respuesta2" value="Regular">
+                                            Regular
                                         </label>
                                     </div>
                                     <div class="col-md-2">
                                         <label class="radio">
-                                            <input type="radio" name="pregunta1" id="preguntac" value="NA"> Bueno
+                                            <input type="radio" name="respuesta2" id="respuesta2" value="Bueno"> Bueno
                                         </label>
                                     </div>
                                     <div class="col-md-2">
                                         <label class="radio">
-                                            <input type="radio" name="pregunta1" id="preguntac" value="NA">
+                                            <input type="radio" name="respuesta2" id="respuesta2" value="Excelente">
                                             Excelente
                                         </label>
                                     </div>
@@ -259,7 +267,8 @@
                         <div class="col-lg-12 mb-3">
                             <div class="form-group row">
                                 <div class="col-md-6">
-                                    <h3 class="mb-3">C. ¿La persona administrativa, contestó de forma rápida y adecuada
+                                    <h3 class="mb-3">C. ¿La persona administrativa, contestó de forma rápida y
+                                        adecuada
                                         sus inquietudes?
                                     </h3>
                                 </div>
@@ -481,6 +490,7 @@
             </div>
         </div>
     </div>
+    </form>
     <!-- <div class="container-xl">
     <div class="page-header d-print-none">
         <div class="row align-items-center">

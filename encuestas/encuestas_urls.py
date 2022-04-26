@@ -1,7 +1,7 @@
 from os import name
-from encuestas.views import home
+from encuestas.views import encuesta_satisfaccion_view
 from django.urls import path
 
 urlpatterns = [
-    path('', home, name='home'),
+    path('', encuesta_satisfaccion_view, name='encuesta_satisfaccion_view'),
 ]
