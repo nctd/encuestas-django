@@ -1,10 +1,7 @@
-from ast import Return
 import datetime
 from django.shortcuts import render
 
-from encuestas.models import EncuestaSatisfaccion
-
-from .forms import EncuestaSatisfaccionForm, PreguntaSatisfaccionForm
+from ..forms import EncuestaSatisfaccionForm, PreguntaSatisfaccionForm
 
 pregunta_1 = '¿Cómo fue la atención general que se le brindó?'
 pregunta_2 = '¿Se demostró conocimiento del o los servicios ofrecidos?'
@@ -17,10 +14,15 @@ pregunta_8 = '¿Se cumplió con lo planificado en el Servicio?'
 pregunta_9 = 'Observaciones'
 
 def encuesta_satisfaccion_view(request):
+    data = {
+        'pregunta_1' : pregunta_1,
+        'respuestas': ['Deficiente','Malo','Regular','Bueno','Excelente']
+    }
     if request.method == 'POST':
-        valores_respuestas = [request.POST['respuesta1'],request.POST['respuesta2'],request.POST['respuesta3'],request.POST['respuesta4']]
-        print(valores_respuestas)
-        if(validarRespuestaSatisfaccion(valores_respuestas,'M')):
+        valores_respuestas_m = [request.POST['respuesta1'],request.POST['respuesta2'],request.POST['respuesta3'],request.POST['respuesta4']]
+        valores_respuestas_sn = [request.POST['respuesta5'],request.POST['respuesta6'],request.POST['respuesta7'],request.POST['respuesta8']]
+        
+        if(validarRespuestaSatisfaccion(valores_respuestas_m,'M') and validarRespuestaSatisfaccion(valores_respuestas_sn,'SN')):
             encuesta = EncuestaSatisfaccionForm(data=True)
             if(encuesta.is_valid()):
                 e_id = encuesta.save()
@@ -28,6 +30,10 @@ def encuesta_satisfaccion_view(request):
                 guardarRespuestaEncuesta(pregunta_2,request.POST['respuesta2'],e_id)
                 guardarRespuestaEncuesta(pregunta_3,request.POST['respuesta3'],e_id)
                 guardarRespuestaEncuesta(pregunta_4,request.POST['respuesta4'],e_id)
+                guardarRespuestaEncuesta(pregunta_5,request.POST['respuesta5'],e_id)
+                guardarRespuestaEncuesta(pregunta_6,request.POST['respuesta6'],e_id)
+                guardarRespuestaEncuesta(pregunta_7,request.POST['respuesta7'],e_id)
+                guardarRespuestaEncuesta(pregunta_8,request.POST['respuesta8'],e_id)
         else:
             print('valor modificado por html ERROR')
             
@@ -36,7 +42,7 @@ def encuesta_satisfaccion_view(request):
 
     else:
         print('nopost')
-    return render(request, 'index.html')
+    return render(request, 'index.html',data)
     # return render(request, 'index.html')
 
 def validarRespuestaSatisfaccion(value,type_value):
@@ -46,9 +52,10 @@ def validarRespuestaSatisfaccion(value,type_value):
                 return False
         else:
             return True
-    if(type_value == 'YN'):
-        if(value not in ['Si','No']):
-            return False
+    if(type_value == 'SN'):
+        for val in value:
+            if(val not in ['Si','No']):
+                return False
         else:
             return True
     return False

@@ -1,3 +1,4 @@
 from django.contrib import admin
+from .models.catalogoModel import catalogoModel
 
-# Register your models here.
+admin.site.register(catalogoModel)

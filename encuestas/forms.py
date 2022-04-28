@@ -2,16 +2,17 @@ from dataclasses import fields
 from pyexpat import model
 from django import forms
 
-from .models import EncuestaSatisfaccion, PreguntaSatisfaccion
+from .models.encuestaSatisfaccionModel import encuestaSatisfaccionModel
+from .models.preguntaSatisfaccionModel import preguntaSatisfaccionModel
 
 class EncuestaSatisfaccionForm(forms.ModelForm):
     class Meta:
-        model = EncuestaSatisfaccion
+        model = encuestaSatisfaccionModel
         fields = '__all__'
         
 class PreguntaSatisfaccionForm(forms.ModelForm):
     class Meta:
-        model = PreguntaSatisfaccion
+        model = preguntaSatisfaccionModel
         fields = '__all__'    
         
         
