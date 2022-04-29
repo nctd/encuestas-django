@@ -26,8 +26,8 @@ SECRET_KEY = 'django-insecure-uytbwy!_fddn_3wft#h!+us8++l5498@665y6tmt1))ue6m@o6
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
+# PRUEBA MESSAGE API's
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 # Application definition
 
 INSTALLED_APPS = [
@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'GMT-4'
 
 USE_I18N = True
 

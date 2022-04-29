@@ -9,7 +9,7 @@ class preguntaSatisfaccionModel(models.Model):
     pregunta_id = models.AutoField(primary_key=True)
     pregunta = models.CharField(max_length=250,blank=False)
     respuesta = models.CharField(max_length=250,blank=False)
-    e = models.ForeignKey(encuestaSatisfaccionModel,on_delete=PROTECT)
+    e = models.ForeignKey(encuestaSatisfaccionModel,on_delete=models.PROTECT)
     
     class Meta:
         verbose_name = 'PreguntaSatisfaccion'
