@@ -1,21 +1,26 @@
 from django.shortcuts import render
 from django.contrib import messages
 
+from encuestas.views.utils.utils import guardarRespuestaEncuesta, validarRespuestaSatisfaccion
+
 from ..forms import EncuestaSatisfaccionForm
 
-from encuestas.views.utils.utils import guardarRespuestaEncuesta, validarRespuestaSatisfaccion
-pregunta_1 = '¿Cómo fue la atención general que se le brindó?'
-pregunta_2 = '¿Se demostró conocimiento del o los servicios ofrecidos?'
-pregunta_3 = '¿La persona administrativa, contestó de forma rápida y adecuada sus inquietudes?'
-pregunta_4 = '¿Qué le pareció el servicio en general brindado?'
-pregunta_5 = '¿Recomendaría al organismo de capacitación?'
-pregunta_6 = '¿Compraría otro servicio al organismo?'
-pregunta_7 = '¿El servicio prestado, cumplió con sus expectativas?'
-pregunta_8 = '¿Se cumplió con lo planificado en el Servicio?'
-pregunta_9 = '¿Qué otros cursos le gustarían tomar?'
+
+pregunta_1 = 'Se cumplieron los objetivos del curso '
+pregunta_2 = 'El contenido del curso fue interesante e importante para su trabajo'
+pregunta_3 = 'Intercambio de experiencias entre los participantes '
+pregunta_4 = 'Dinámica del curso'
+pregunta_5 = 'Ambiente de Trabajo'
+pregunta_6 = 'Comunicación y dominio de los contenidos por parte del Relator'
+pregunta_7 = 'Puntualidad del Relator'
+pregunta_8 = 'Calidad de su manual de trabajo'
+pregunta_9 = 'Proyección de la Clase (Contenidos, nitidez, colores)'
+pregunta_10 = 'Que le pareció el trato que recibió como cliente'
+pregunta_11 = 'Instalaciones (Infraestructura)'
+pregunta_12 = 'Servicio de Alimentación.'
 
 
-def encuesta_satisfaccion_view(request):
+def encuesta_curso_view(request):
     data = {
         'pregunta_1': pregunta_1,
         'pregunta_2': pregunta_2,
@@ -26,8 +31,10 @@ def encuesta_satisfaccion_view(request):
         'pregunta_7': pregunta_7,
         'pregunta_8': pregunta_8,
         'pregunta_9': pregunta_9,
+        'pregunta_10': pregunta_10,
+        'pregunta_11': pregunta_11,
+        'pregunta_12': pregunta_12,
         'respuestas': ['Deficiente', 'Malo', 'Regular', 'Bueno', 'Excelente'],
-        'respuestas_2': ['Si', 'No']
     }
     if request.method == 'POST':
         valores_respuestas_m = [request.POST.get('respuesta1', False), request.POST.get('respuesta2', False), 
@@ -51,9 +58,9 @@ def encuesta_satisfaccion_view(request):
         else:
             print('not post')
             data['error'] = True
-            return render(request,'encuestas/encuesta_satisfaccion.html', data)
+            return render(request,'encuestas/encuesta_curso.html', data)
 
     else:
         print('nopost')
-    return render(request, 'encuestas/encuesta_satisfaccion.html', data)
+    return render(request, 'encuestas/encuesta_curso.html', data)
 

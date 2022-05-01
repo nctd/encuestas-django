@@ -1,0 +1,502 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="container-xl col-lg-7">
+        <!-- Page title -->
+        <div class="page-header d-print-none">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-auto">
+                    <h2 class="page-title">
+                        Encuesta Satisfacción del Cliente
+                    </h2>
+                </div>
+
+                <!-- <div class="col-md-2 ms-auto d-print-none" id="container-agregar-ov">
+                    <button class="btn btn-primary w-100" id='btn-agregar-ov' type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" width="24"
+                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                            <path d="M21 3l-6.5 18a0.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a0.55 .55 0 0 1 0 -1l18 -6.5">
+                            </path>
+                        </svg>
+                        Enviar
+                    </button>
+                </div> -->
+                <div class="col-md-auto ms-auto d-print-none">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="btn-list">
+                            <a class="btn" href="{% url 'home' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="icon icon-tabler icon-tabler-arrow-back-up" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M9 13l-4 -4l4 -4m-4 4h11a4 4 0 0 1 0 8h-1"></path>
+                                </svg>
+                                Atrás
+                            </a>
+
+                            <button type="submit" class="btn btn-primary" id="btn-enviar">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    <path
+                                        d="M21 3l-6.5 18a0.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a0.55 .55 0 0 1 0 -1l18 -6.5">
+                                    </path>
+                                </svg>
+                                Enviar
+                            </button>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl col-lg-7">
+            <div class="card card-md">
+                <div class="card-body">
+                    <div class="form-group mb-3 row">
+                        <label class="form-label col-lg-3 col-form-label">Nombre de la Empresa Cliente:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label class="form-label col-lg-3 col-form-label">Nombre Contacto:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label class="form-label col-3 col-form-label">Fecha:</label>
+                        <div class="col-lg-6">
+                            <div class="input-icon">
+                                <span class="input-icon-addon">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <rect x="4" y="5" width="16" height="16" rx="2" />
+                                        <line x1="16" y1="3" x2="16" y2="7" />
+                                        <line x1="8" y1="3" x2="8" y2="7" />
+                                        <line x1="4" y1="11" x2="20" y2="11" />
+                                        <line x1="11" y1="15" x2="12" y2="15" />
+                                        <line x1="12" y1="15" x2="12" y2="18" />
+                                    </svg>
+                                </span>
+                                <input class="form-control" placeholder="Fecha" id="fecha-satisfaccion"
+                                    name='fecha-satisfaccion' type='text' autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label class="form-label col-lg-3 col-form-label">Curso:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label class="form-label col-lg-3 col-form-label">Hora y Día de Ejecución del
+                            Curso:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="form-label col-lg-3 col-form-label">Relator:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="page-body">
+        <div class="container-xl col-lg-7">
+            <div class="card card-md">
+                <div class='card-header'>
+                    <h3 class="card-title">Con respecto a la Atención Comercial</h3>
+                </div>
+                <div class="card-body">
+                    <div class="space-y-4">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <h3 class="mb-3">A. {{pregunta_1}}
+                                    </h3>
+                                </div>
+                                <div class="row mb-3">
+                                    {% for resp in respuestas %}
+                                    <div class="col-sm-2">
+                                        <label class="radio">
+                                            <input type="radio" name="respuesta1" id="respuesta1" value={{resp}}>
+                                            {{resp}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <!--  PREGUNTA 2  -->
+                                <div class="col-md-12">
+                                    <h3 class="mb-3">B. {{pregunta_2}}
+                                    </h3>
+                                </div>
+                                <div class="row">
+                                    {% for resp in respuestas %}
+                                    <div class="col-sm-2">
+                                        <label class="radio">
+                                            <input type="radio" name="respuesta2" id="respuesta2" value={{resp}}>
+                                            {{resp}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class='card-header'>
+                    <h3 class="card-title">Con respecto a la Atención Telefónica</h3>
+                </div>
+                <div class="card-body">
+                    <div class="space-y-4">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <h3 class="mb-3">C. ¿La persona administrativa, contestó de forma rápida y adecuada
+                                        sus inquietudes?
+                                    </h3>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-sm-2">
+                                        <label class="radio">
+                                            <input type="radio">
+                                            Deficiente
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="radio">
+                                            <input type="radio"> Malo
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="radio">
+                                            <input type="radio" name="pregunta1" id="preguntac" value="NA"> Regular
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="radio">
+                                            <input type="radio" name="pregunta1" id="preguntac" value="NA"> Bueno
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="radio">
+                                            <input type="radio" name="pregunta1" id="preguntac" value="NA">
+                                            Excelente
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl col-lg-7">
+            <div class="card card-md">
+                <div class='card-header'>
+                    <h3 class="card-title">Con respecto a la Atención Telefónica</h3>
+                </div>
+                <div class="card-body">
+                    <div class="space-y-4">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <h3 class="mb-3">C. {{pregunta_3}}
+                                    </h3>
+                                </div>
+                                <div class="row">
+                                    {% for resp in respuestas %}
+                                    <div class="col-sm-2">
+                                        <label class="radio">
+                                            <input type="radio" name="respuesta3" id="respuesta3" value={{resp}}>
+                                            {{resp}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl col-lg-7">
+            <div class="card card-md">
+                <div class='card-header'>
+                    <h3 class="card-title">Con respecto al OTEC</h3>
+                </div>
+                <div class="card-body">
+                    <div class="space-y-4">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <h3 class="mb-3">D. {{pregunta_4}}
+                                    </h3>
+                                </div>
+                                <div class="row">
+                                    {% for resp in respuestas %}
+                                    <div class="col-sm-2">
+                                        <label class="radio">
+                                            <input type="radio" name="respuesta4" id="respuesta4" value={{resp}}>
+                                            {{resp}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl col-lg-7">
+            <div class="card card-md">
+                <div class='card-header'>
+                    <h3 class="card-title">Con respecto al organismo</h3>
+                </div>
+                <div class="card-body">
+                    <div class="space-y-4">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <h3 class="mb-3">E. {{pregunta_5}}
+                                    </h3>
+                                </div>
+                                <div class="row mb-3">
+                                    {% for resp in respuestas_2 %}
+                                    <div class="col-sm-2">
+                                        <label class="radio">
+                                            <input type="radio" name="respuesta5" id="respuesta5" value={{resp}}>
+                                            {{resp}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-md-12">
+                                    <h3 class="mb-3">F. {{pregunta_6}}
+                                    </h3>
+                                </div>
+                                <div class="row">
+                                    {% for resp in respuestas_2 %}
+                                    <div class="col-sm-2">
+                                        <label class="radio">
+                                            <input type="radio" name="respuesta6" id="respuesta6" value={{resp}}>
+                                            {{resp}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl col-lg-7">
+            <div class="card card-md">
+                <div class='card-header'>
+                    <h3 class="card-title">Con respecto al Curso</h3>
+                </div>
+                <div class="card-body">
+                    <div class="space-y-4">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <h3 class="mb-3">G. {{pregunta_7}}
+                                    </h3>
+                                </div>
+                                <div class="row mb-3">
+                                    {% for resp in respuestas_2 %}
+                                    <div class="col-sm-2">
+                                        <label class="radio">
+                                            <input type="radio" name="respuesta7" id="respuesta7" value={{resp}}>
+                                            {{resp}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-md-12">
+                                    <h3 class="mb-3">H. {{pregunta_8}}
+                                    </h3>
+                                </div>
+                                <div class="row">
+                                    {% for resp in respuestas_2 %}
+                                    <div class="col-sm-2">
+                                        <label class="radio">
+                                            <input type="radio" name="respuesta8" id="respuesta8" value={{resp}}>
+                                            {{resp}}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-xl col-lg-7">
+            <div class="card card-md">
+                <div class='card-header'>
+                    <h3 class="card-title">Observaciones</h3>
+                </div>
+                <div class="card-body">
+                    <div class="space-y-4">
+                        <div class="col-lg-12">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <h3 class="mb-3">I. {{pregunta_9}}
+                                    </h3>
+                                </div>
+                                <div>
+                                    <textarea class="form-control" name="respuesta9" id="respuesta9" rows="4">
+
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </form>
+
+    <div class="modal modal-blur fade" id="modal-error" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-danger"></div>
+                <div class="modal-body text-center py-4">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 9v2m0 4v.01" />
+                        <path
+                            d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
+                    </svg>
+                    <h3>Alerta</h3>
+                    <div class="text-muted">Debe completar todos los campos</div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+
+                            <div class="col"><a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                                    OK
+                                </a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="container-xl">
+    <div class="page-header d-print-none">
+        <div class="row align-items-center">
+            <div class="col">
+                <h2 class="page-title">
+                    Bienvenido/a
+                </h2>
+            </div>
+
+
+        </div>
+    </div>
+</div> -->
+<!-- <div class="page-body">
+    <div class="container-xl">
+        <div class="col-12">
+            <div class="card">
+                <div class='card-header'>
+                    <h3 class="card-title">Menú de inicio</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const picker = new Litepicker({
+            element: document.getElementById('fecha-satisfaccion'),
+            autoRefresh: true,
+            format: 'DD/MM/YYYY',
+            lang: 'es-ES',
+            minDate: Date.now(),
+            buttonText: {
+                previousMonth:
+                    `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <polyline points="15 6 9 12 15 18" />
+                            </svg>`,
+                nextMonth:
+                    `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <polyline points="9 6 15 12 9 18" />
+                            </svg>`,
+            },
+        });
+    })
+</script>
+{% if error %}
+<script>
+    $(document).ready(function () {
+        $("#modal-error").modal('show');
+    });
+</script>
+{% endif %}
+<script>
+    $("#btn-enviar").on('click', function (e) {
+        //alert($("input[type='radio']:checked").length)
+        if ($("input[type='radio']:checked").length < 8) {
+            e.preventDefault()
+            $("#modal-error").modal('show');
+        }
+
+    })
+</script>
+
+{% endblock %}

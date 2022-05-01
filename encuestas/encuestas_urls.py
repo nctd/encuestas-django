@@ -1,8 +1,11 @@
-from os import name
 from .views.encuesta_satisfaccion_view import encuesta_satisfaccion_view
-# from .views.satisfaccion_view import encuesta_view
+from .views.encuesta_curso_view import encuesta_curso_view
+from .views.home import home
+
 from django.urls import path
 
 urlpatterns = [
-    path('', encuesta_satisfaccion_view, name='encuesta_satisfaccion_view'),
+    path('',home,name='home'),
+    path('encuesta_satisfaccion', encuesta_satisfaccion_view, name='encuesta_satisfaccion'),
+    path('encuesta_curso', encuesta_curso_view, name='encuesta_curso'),
 ]
