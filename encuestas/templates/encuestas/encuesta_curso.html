@@ -66,25 +66,31 @@
                     <div class="form-group mb-3 row">
                         <label class="form-label col-lg-3 col-form-label">Nombre del curso:</label>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control">
+                            <select class="form-select" name="curso">
+                                {% for item in cursos %}
+                                <option value="{{item.curso_id}}-{{item.nombre_curso}}">
+                                    {{item.nombre_curso}}</option>
+                                {% endfor %}
+
+                            </select>
                         </div>
                     </div>
                     <div class="form-group mb-3 row">
                         <label class="form-label col-lg-3 col-form-label">Nombre del Relator:</label>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="relator">
                         </div>
                     </div>
                     <div class="form-group mb-3 row">
                         <label class="form-label col-lg-3 col-form-label">Empresa Participante:</label>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="empresa_participante">
                         </div>
                     </div>
                     <div class="form-group mb-3 row">
                         <label class="form-label col-lg-3 col-form-label">Nombre Alumno:</label>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="nombre_alumno">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -470,12 +476,12 @@
 {% endif %}
 
 <script>
-    $("#btn-enviar").on('click', function (e) {
-        if ($("input[type='radio']:checked").length < 8) {
-            e.preventDefault()
-            $("#modal-error").modal('show');
-        }
-    })
+//    $("#btn-enviar").on('click', function (e) {
+//        if ($("input[type='radio']:checked").length < 8) {
+//            e.preventDefault()
+//            $("#modal-error").modal('show');
+ //       }
+ //   })
 </script>
 
 {% endblock %}

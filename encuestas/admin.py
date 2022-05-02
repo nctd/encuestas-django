@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models.catalogoModel import catalogoModel
+from .models.cursoModel import cursoModel
 
-admin.site.register(catalogoModel)
+admin.site.register(cursoModel)

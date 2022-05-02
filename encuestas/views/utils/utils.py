@@ -1,6 +1,8 @@
-from ...forms import PreguntaSatisfaccionForm
+from msilib.schema import Error
+from encuestas.models import cursoModel
+from ...forms import PreguntaCursoForm, PreguntaSatisfaccionForm
 
-def validarRespuestaSatisfaccion(value, type_value):
+def validarRespuestaEncuesta(value, type_value):
     if(type_value == 'M'):
         for val in value:
             if(val not in ['Deficiente', 'Malo', 'Regular', 'Bueno', 'Excelente']):
@@ -16,7 +18,7 @@ def validarRespuestaSatisfaccion(value, type_value):
     return False
 
 
-def guardarRespuestaEncuesta(pregunta, respuesta, id_encuesta):
+def guardarRespuestaEncuestaSatisfaccion(pregunta, respuesta, id_encuesta):
     data_preg = {
         'pregunta': pregunta,
         'respuesta': respuesta,
@@ -25,3 +27,22 @@ def guardarRespuestaEncuesta(pregunta, respuesta, id_encuesta):
     pregunta = PreguntaSatisfaccionForm(data=data_preg)
     if pregunta.is_valid():
         pregunta.save()
+
+def validarCurso(curso_id,nombre_curso):
+    exists = cursoModel.objects.filter(curso_id=curso_id,nombre_curso=nombre_curso).exists()
+    if exists: 
+        return True 
+    return False
+
+def guardarRespuestaEncuestaCurso(pregunta, respuesta, id_encuesta, alumno):
+    data_preg = {
+        'pregunta': pregunta,
+        'respuesta': respuesta,
+        'e_curso': id_encuesta,
+        'alumno': alumno
+    }
+    pregunta = PreguntaCursoForm(data=data_preg)
+    if pregunta.is_valid():
+        pregunta.save()
+    else:
+        return Exception('ERROR')

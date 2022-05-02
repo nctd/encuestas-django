@@ -3,7 +3,8 @@ from django.contrib import messages
 
 from ..forms import EncuestaSatisfaccionForm
 
-from encuestas.views.utils.utils import guardarRespuestaEncuesta, validarRespuestaSatisfaccion
+from encuestas.views.utils.utils import guardarRespuestaEncuestaSatisfaccion, validarRespuestaEncuesta
+
 pregunta_1 = '¿Cómo fue la atención general que se le brindó?'
 pregunta_2 = '¿Se demostró conocimiento del o los servicios ofrecidos?'
 pregunta_3 = '¿La persona administrativa, contestó de forma rápida y adecuada sus inquietudes?'
@@ -35,19 +36,19 @@ def encuesta_satisfaccion_view(request):
         valores_respuestas_sn = [request.POST.get('respuesta5', False), request.POST.get('respuesta6', False),
                                  request.POST.get('respuesta7', False), request.POST.get('respuesta8', False)]
 
-        if(validarRespuestaSatisfaccion(valores_respuestas_m, 'M') and validarRespuestaSatisfaccion(valores_respuestas_sn, 'SN')):
+        if(validarRespuestaEncuesta(valores_respuestas_m, 'M') and validarRespuestaEncuesta(valores_respuestas_sn, 'SN')):
             encuesta = EncuestaSatisfaccionForm(data=True)
             if(encuesta.is_valid()):
                 e_id = encuesta.save()
-                guardarRespuestaEncuesta(pregunta_1, request.POST['respuesta1'], e_id)
-                guardarRespuestaEncuesta(pregunta_2, request.POST['respuesta2'], e_id)
-                guardarRespuestaEncuesta(pregunta_3, request.POST['respuesta3'], e_id)
-                guardarRespuestaEncuesta(pregunta_4, request.POST['respuesta4'], e_id)
-                guardarRespuestaEncuesta(pregunta_5, request.POST['respuesta5'], e_id)
-                guardarRespuestaEncuesta(pregunta_6, request.POST['respuesta6'], e_id)
-                guardarRespuestaEncuesta(pregunta_7, request.POST['respuesta7'], e_id)
-                guardarRespuestaEncuesta(pregunta_8, request.POST['respuesta8'], e_id)
-                guardarRespuestaEncuesta(pregunta_9, request.POST['respuesta9'], e_id)
+                guardarRespuestaEncuestaSatisfaccion(pregunta_1, request.POST['respuesta1'], e_id)
+                guardarRespuestaEncuestaSatisfaccion(pregunta_2, request.POST['respuesta2'], e_id)
+                guardarRespuestaEncuestaSatisfaccion(pregunta_3, request.POST['respuesta3'], e_id)
+                guardarRespuestaEncuestaSatisfaccion(pregunta_4, request.POST['respuesta4'], e_id)
+                guardarRespuestaEncuestaSatisfaccion(pregunta_5, request.POST['respuesta5'], e_id)
+                guardarRespuestaEncuestaSatisfaccion(pregunta_6, request.POST['respuesta6'], e_id)
+                guardarRespuestaEncuestaSatisfaccion(pregunta_7, request.POST['respuesta7'], e_id)
+                guardarRespuestaEncuestaSatisfaccion(pregunta_8, request.POST['respuesta8'], e_id)
+                guardarRespuestaEncuestaSatisfaccion(pregunta_9, request.POST['respuesta9'], e_id)
         else:
             print('not post')
             data['error'] = True
