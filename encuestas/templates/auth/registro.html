@@ -1,0 +1,165 @@
+{% load static %}
+
+
+<!doctype html>
+
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Admin panel</title>
+    <!-- CSS files -->
+    <link href="{% static 'css/tabler.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/tabler-flags.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/tabler-payments.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/tabler-vendors.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/demo.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" />
+
+    <!-- JQUERY -->
+    <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
+</head>
+
+<body class="antialiased border-top-wide border-primary d-flex flex-column">
+    <div class="page page-center">
+        <div class="container-tight py-4">
+            <div class="text-center mb-4">
+                <a href="."><img src="{% static 'img/logo_exsol.png' %}" height="65" alt=""></a>
+            </div>
+            <form class="card card-md" action="" method="POST">
+                {% csrf_token %}
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Registro de usuario</h2>
+                    <div class="mb-3" id="container-first">
+                        <label class="form-label">Nombre</label>
+                        {{ form.first_name }}
+
+                    </div>
+
+                    <div class="mb-3" id="container-last">
+                        <label class="form-label">Apellido</label>
+                        {{ form.last_name }}
+                    </div>
+                    <div class="mb-3" id="container-username">
+                        <label class="form-label">Nombre de usuario</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Correo electrónico</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contraseña</label>
+                        <div class="mb-2">
+                            {{ form.password1 }}
+
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Confirmación</label>
+                        <div class="mb-2" id="container-password2">
+                            {{ form.password2 }}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-check">
+                            <input type="checkbox" class="form-check-input" id="mostrar-contraseña" />
+                            <span class="form-check-label">Mostrar contraseña</span>
+                        </label>
+                    </div>
+
+                    <div class="form-footer">
+                        <button type="submit" class="btn btn-primary w-100" id="bt-registro">Registrarse</button>
+                    </div>
+                </div>
+            </form>
+            <div class="text-center text-muted mt-3">
+                ¿Ya tienes una cuenta? <a href="{% url 'login' %}" tabindex="-1">Iniciar sesión</a>
+            </div>
+        </div>
+    </div>
+
+    {% if form.errors.username %}
+    <script>
+        $('#username').addClass('is-invalid');
+        $('#container-username').append('<div class="invalid-feedback">{{form.errors.username}}</div>')
+    </script>
+    {% endif %}
+
+    {% if form.errors.password2 %}
+    <script>
+        $('#password1').addClass('is-invalid');
+        $('#password2').addClass('is-invalid');
+        $('#container-password2').append('<div class="invalid-feedback">{{form.errors.password2}}</div>')
+    </script>
+    {% endif %}
+    <script>
+        $("#first_name").on('click', function (e) {
+            event.stopPropagation();
+            $('#first_name').removeClass("is-invalid");
+        })
+        $("#last_name").on('click', function (e) {
+            event.stopPropagation();
+            $('#last_name').removeClass("is-invalid");
+        })
+        $("#username").on('click', function (e) {
+            event.stopPropagation();
+            $('#username').removeClass("is-invalid");
+        })
+        $("#password1").on('click', function (e) {
+            event.stopPropagation();
+            $('#password1').removeClass("is-invalid");
+        })
+        $("#password2").on('click', function (e) {
+            event.stopPropagation();
+            $('#password2').removeClass("is-invalid");
+        })
+    </script>
+    <script>
+        $("#bt-registro").one('click', function (e) {
+            // $('feedback-username').remove()
+            if ($("#first_name").val() == '') {
+                e.preventDefault()
+                $('#first_name').addClass('is-invalid');
+                $('#container-first').append('<div id="feedback-username" class="invalid-feedback">Debe ingresar un nombre</div>')
+            }
+            if ($("#last_name").val() == '') {
+                e.preventDefault()
+                $('#last_name').addClass('is-invalid');
+                $('#container-last').append('<div id="feedback-username" class="invalid-feedback">Debe ingresar un apellido</div>')
+            }
+            if ($("#username").val() == '') {
+                e.preventDefault()
+                $('#username').addClass('is-invalid');
+                $('#container-username').append('<div id="feedback-username" class="invalid-feedback">Debe ingresar un nombre de usuario</div>')
+                event.stopPropagation();
+            }
+        })
+
+    </script>
+
+    <script>
+        $('#mostrar-contraseña').on('click', function (e) {
+            if ($('#password1').attr('type') == 'password') {
+                $('#password1').prop('type', 'text');
+
+            } else {
+                $('#password1').prop('type', 'password');
+            }
+            if ($('#password2').attr('type') == 'password') {
+                $('#password2').prop('type', 'text');
+
+            } else {
+                $('#password2').prop('type', 'password');
+            }
+        })
+    </script>
+
+
+
+    <script src="{% static 'js/tabler.min.js' %}"></script>
+</body>
+
+</html>

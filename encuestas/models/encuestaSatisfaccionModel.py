@@ -2,7 +2,7 @@ from django.db import models
 
 
 class encuestaSatisfaccionModel(models.Model):
-    e_id = models.AutoField(primary_key=True)
+    encuesta_id = models.AutoField(primary_key=True)
     fecha_creacion = models.DateTimeField(auto_now=True)
     
     class Meta:

@@ -19,4 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('encuestas.encuestas_urls')),
+    path('auth/', include('django.contrib.auth.urls')),
+    path('auth/', include('encuestas.auth_urls'))
 ]

@@ -29,6 +29,11 @@ ALLOWED_HOSTS = []
 # PRUEBA MESSAGE API's
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 # Application definition
+LOGIN_URL = 'login_user'
+LOGIN_REDIRECT_URL = '/planificacion'
+
+# LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/auth/login_user'
 
 INSTALLED_APPS = [
     'django.contrib.admin',

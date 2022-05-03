@@ -1,0 +1,178 @@
+{% load static %}
+
+<!doctype html>
+
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Admin panel</title>
+    <!-- CSS files -->
+    <link href="{% static 'css/tabler.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/tabler-flags.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/tabler-payments.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/tabler-vendors.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/demo.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" />
+
+    <!-- JQUERY -->
+    <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
+</head>
+
+<body class="antialiased border-top-wide border-primary d-flex flex-column">
+    <div class="page page-center">
+        <div class="container-tight py-4">
+            <div class="text-center mb-4">
+                <a href="."><img src="{% static 'img/logo_exsol.png' %}" height="65" alt=""></a>
+            </div>
+            <form class="card card-md" action="" method="post" autocomplete="off">
+                {% csrf_token %}
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Inicio de sesión</h2>
+                    <div class="mb-3">
+                        <label class="form-label">Nombre de usuario</label>
+                        <input type="text" class="form-control" name="username" id="username">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Contraseña
+                            <!-- <span class="form-label-description">
+                                <a href="./forgot-password.html">¿Olvidaste tu contraseña?</a>
+                            </span> -->
+                        </label>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" autocomplete="off" name="password"
+                                id="password">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-check">
+                            <input type="checkbox" class="form-check-input" id="mostrar-contraseña" />
+                            <span class="form-check-label">Mostrar contraseña</span>
+                        </label>
+                    </div>
+
+                    <div class="form-footer">
+                        <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+                    </div>
+                </div>
+
+            </form>
+            <div class="text-center text-muted mt-3">
+                ¿No tienes una cuenta? <a href="{% url 'registro' %}" tabindex="-1">Regístrese</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-blur fade" id="modal-registro-exitoso" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-success"></div>
+                <div class="modal-body text-center py-4">
+
+                    <!-- Download SVG icon from http://tabler-icons.io/i/file-check -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-success icon-lg" width="24"
+                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                        <path d="M9 15l2 2l4 -4" />
+                    </svg>
+
+                    <h3>Registro exitoso</h3>
+                    <div class="text-muted">Su cuenta fue creada exitosamente, inicie sesión para continuar</div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+
+                            <div class="col"><a href="#" class="btn btn-success w-100" data-bs-dismiss="modal">
+                                    OK
+                                </a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-blur fade" id="modal-error-login" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-danger"></div>
+                <div class="modal-body text-center py-4">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 9v2m0 4v.01" />
+                        <path
+                            d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
+                    </svg>
+                    <h3>Alerta</h3>
+                    <div class="text-muted" id='content-error-login'>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+
+                            <div class="col"><a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                                    OK
+                                </a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if messages %}
+    {% for message in messages %}
+    <script>
+        $('#username').addClass('is-invalid');
+        $('#password').addClass('is-invalid');
+        $('#content-error-login').text('{{message}}')
+        $(document).ready(function () {
+            $("#modal-error-login").modal('show');
+        })
+    </script>
+    {% endfor %}
+    {% endif %}
+
+    {% if request.GET.register %}
+    <script>
+        $(document).ready(function () {
+            $("#modal-registro-exitoso").modal('show');
+        })
+    </script>
+    {% endif %}
+    <script>
+        $("#username").on('click', function (e) {
+            event.stopPropagation();
+            $('#username').removeClass("is-invalid");
+        })
+        $("#password").on('click', function (e) {
+            event.stopPropagation();
+            $('#password').removeClass("is-invalid");
+        })
+    </script>
+    <script>
+        $('#mostrar-contraseña').on('click', function (e) {
+            if ($('#password').attr('type') == 'password') {
+                $('#password').prop('type', 'text');
+            } else {
+                $('#password').prop('type', 'password');
+            }
+        })
+    </script>
+
+    <script src="{% static 'js/tabler.min.js' %}"></script>
+</body>
+
+</html>

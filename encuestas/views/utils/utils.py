@@ -1,6 +1,6 @@
 from msilib.schema import Error
 from encuestas.models import cursoModel
-from ...forms import PreguntaCursoForm, PreguntaSatisfaccionForm
+from ...forms import PreguntaCursoForm, RespuestaSatisfaccionForm
 
 def validarRespuestaEncuesta(value, type_value):
     if(type_value == 'M'):
@@ -18,15 +18,16 @@ def validarRespuestaEncuesta(value, type_value):
     return False
 
 
-def guardarRespuestaEncuestaSatisfaccion(pregunta, respuesta, id_encuesta):
-    data_preg = {
+def guardarRespuestaEncuestaSatisfaccion(pregunta, respuesta, encuesta, curso):
+    data_resp = {
         'pregunta': pregunta,
         'respuesta': respuesta,
-        'e': id_encuesta
+        'encuesta': encuesta,
+        'curso': curso
     }
-    pregunta = PreguntaSatisfaccionForm(data=data_preg)
-    if pregunta.is_valid():
-        pregunta.save()
+    respuesta = RespuestaSatisfaccionForm(data=data_resp)
+    if respuesta.is_valid():
+        respuesta.save()
 
 def validarCurso(curso_id,nombre_curso):
     exists = cursoModel.objects.filter(curso_id=curso_id,nombre_curso=nombre_curso).exists()

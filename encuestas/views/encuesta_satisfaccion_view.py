@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.contrib import messages
 
+from encuestas.models.preguntaSatisfaccionModel import preguntaSatisfaccionModel
+
 from ..forms import EncuestaSatisfaccionForm
 
 from encuestas.views.utils.utils import guardarRespuestaEncuestaSatisfaccion, validarRespuestaEncuesta
@@ -17,18 +19,31 @@ pregunta_9 = '¿Qué otros cursos le gustarían tomar?'
 
 
 def encuesta_satisfaccion_view(request):
+    # ESTA ENCUESTA, SOLO LA RESPONDEN LAS EMPRESAS
+    preguntas = preguntaSatisfaccionModel.objects.all().values_list()
+    print(preguntas[0][2].split(','))
     data = {
-        'pregunta_1': pregunta_1,
-        'pregunta_2': pregunta_2,
-        'pregunta_3': pregunta_3,
-        'pregunta_4': pregunta_4,
-        'pregunta_5': pregunta_5,
-        'pregunta_6': pregunta_6,
-        'pregunta_7': pregunta_7,
-        'pregunta_8': pregunta_8,
-        'pregunta_9': pregunta_9,
-        'respuestas': ['Deficiente', 'Malo', 'Regular', 'Bueno', 'Excelente'],
-        'respuestas_2': ['Si', 'No']
+        'preguntas' : preguntas
+    }
+    data = {
+        'pregunta_1': preguntas[0][1],
+        'respuesta_1': preguntas[0][2].split(','),
+        'pregunta_2': preguntas[1][1],
+        'respuesta_2': preguntas[1][2].split(','),
+        'pregunta_3': preguntas[2][1],
+        'respuesta_3': preguntas[2][2].split(','),
+        'pregunta_4': preguntas[3][1],
+        'respuesta_4': preguntas[3][2].split(','),
+        'pregunta_5': preguntas[4][1],
+        'respuesta_5': preguntas[4][2].split(','),
+        'pregunta_6': preguntas[5][1],
+        'respuesta_6': preguntas[5][2].split(','),
+        'pregunta_7': preguntas[6][1],
+        'respuesta_7': preguntas[6][2].split(','),
+        'pregunta_8': preguntas[7][1],
+        'respuesta_8': preguntas[7][2].split(','),
+        'pregunta_9': preguntas[8][1],
+
     }
     if request.method == 'POST':
         valores_respuestas_m = [request.POST.get('respuesta1', False), request.POST.get('respuesta2', False), 
@@ -40,15 +55,15 @@ def encuesta_satisfaccion_view(request):
             encuesta = EncuestaSatisfaccionForm(data=True)
             if(encuesta.is_valid()):
                 e_id = encuesta.save()
-                guardarRespuestaEncuestaSatisfaccion(pregunta_1, request.POST['respuesta1'], e_id)
-                guardarRespuestaEncuestaSatisfaccion(pregunta_2, request.POST['respuesta2'], e_id)
-                guardarRespuestaEncuestaSatisfaccion(pregunta_3, request.POST['respuesta3'], e_id)
-                guardarRespuestaEncuestaSatisfaccion(pregunta_4, request.POST['respuesta4'], e_id)
-                guardarRespuestaEncuestaSatisfaccion(pregunta_5, request.POST['respuesta5'], e_id)
-                guardarRespuestaEncuestaSatisfaccion(pregunta_6, request.POST['respuesta6'], e_id)
-                guardarRespuestaEncuestaSatisfaccion(pregunta_7, request.POST['respuesta7'], e_id)
-                guardarRespuestaEncuestaSatisfaccion(pregunta_8, request.POST['respuesta8'], e_id)
-                guardarRespuestaEncuestaSatisfaccion(pregunta_9, request.POST['respuesta9'], e_id)
+                # guardarRespuestaEncuestaSatisfaccion(pregunta_1, request.POST['respuesta1'], e_id)
+                # guardarRespuestaEncuestaSatisfaccion(pregunta_2, request.POST['respuesta2'], e_id)
+                # guardarRespuestaEncuestaSatisfaccion(pregunta_3, request.POST['respuesta3'], e_id)
+                # guardarRespuestaEncuestaSatisfaccion(pregunta_4, request.POST['respuesta4'], e_id)
+                # guardarRespuestaEncuestaSatisfaccion(pregunta_5, request.POST['respuesta5'], e_id)
+                # guardarRespuestaEncuestaSatisfaccion(pregunta_6, request.POST['respuesta6'], e_id)
+                # guardarRespuestaEncuestaSatisfaccion(pregunta_7, request.POST['respuesta7'], e_id)
+                # guardarRespuestaEncuestaSatisfaccion(pregunta_8, request.POST['respuesta8'], e_id)
+                # guardarRespuestaEncuestaSatisfaccion(pregunta_9, request.POST['respuesta9'], e_id)
         else:
             print('not post')
             data['error'] = True
