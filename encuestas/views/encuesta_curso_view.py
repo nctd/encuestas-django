@@ -26,6 +26,7 @@ pregunta_13 = 'Estimado(a) Participante, si desea agregar algún comentario, que
 
 
 def encuesta_curso_view(request):
+    
     cursos = cursoModel.objects.all()
 
     data = {

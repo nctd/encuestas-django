@@ -12,6 +12,7 @@ class cursoModel(models.Model):
     contrato = models.CharField(max_length=100,blank=False)
     req_servicio = models.CharField(max_length=300,blank=False)
     
+    
     class Meta:
         verbose_name = 'curso'
         db_table = 'curso'

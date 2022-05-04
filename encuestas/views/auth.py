@@ -11,7 +11,7 @@ def login_user(request):
 
         if user is not None and user.is_active:
             auth.login(request, user)
-            return redirect('')
+            return redirect('/')
         else:
             messages.error(request,'Nombre de usuario y/o contraseña incorrectos')
             return redirect('login')
