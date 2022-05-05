@@ -52,10 +52,10 @@ class CustomUserAdmin(UserAdmin):
 
 
 class empresaAdmin(admin.ModelAdmin):
-    def filtrar_empresas(self, db_field, request=None, **kwargs):
-            if db_field.name == "user":
-                kwargs["queryset"] = User.objects.filter(es_empresa=True,es_alumno=False)
-            return super(empresaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+        if db_field.name == "user":
+            kwargs["queryset"] = User.objects.filter(es_empresa=True,es_alumno=False)
+        return super(empresaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 admin.site.register(cursoModel)
 admin.site.register(empresaModel,empresaAdmin)

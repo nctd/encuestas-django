@@ -16,3 +16,4 @@ class cursoModel(models.Model):
     class Meta:
         verbose_name = 'curso'
         db_table = 'curso'
+        

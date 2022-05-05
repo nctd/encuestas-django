@@ -27,7 +27,6 @@ def encuesta_satisfaccion_view(request):
         current_user = request.user
         
         empresa_existe = empresaModel.objects.filter(user=current_user.id).exists()
-        
         if empresa_existe:
             empresa = empresaModel.objects.get(user=current_user.id)
             curso_existe = cursoModel.objects.filter(resp_cliente=empresa.empresa_id).exists()
@@ -37,32 +36,56 @@ def encuesta_satisfaccion_view(request):
                 data = {
                     'curso': 'La empresa no tiene ningun curso asociado'
                 }
-                print(data)
                 return render(request,'encuestas/encuesta_satisfaccion.html', data)
         else:
             print('no existe la empresa')
-        preguntas = preguntaSatisfaccionModel.objects.all().values_list()
         
+        preguntas = preguntaSatisfaccionModel.objects.all()
+        if preguntas.count == 0:
+            data = {
+                'error_preguntas': 'El curso no tiene una encuesta asociada'
+            }
+            return render(request,'encuestas/encuesta_satisfaccion.html', data)
+        
+        lista_preguntas = []
+        for item in preguntas:
+            pregunta = {
+                'pregunta' : item.pregunta,
+                'respuesta':item.valor.split(','),
+                'orden': item.orden
+            }
+            lista_preguntas.append(pregunta)
+            print(pregunta)
         data = {
-            'pregunta_1': preguntas[0][1],
-            'respuesta_1': preguntas[0][2].split(','),
-            'pregunta_2': preguntas[1][1],
-            'respuesta_2': preguntas[1][2].split(','),
-            'pregunta_3': preguntas[2][1],
-            'respuesta_3': preguntas[2][2].split(','),
-            'pregunta_4': preguntas[3][1],
-            'respuesta_4': preguntas[3][2].split(','),
-            'pregunta_5': preguntas[4][1],
-            'respuesta_5': preguntas[4][2].split(','),
-            'pregunta_6': preguntas[5][1],
-            'respuesta_6': preguntas[5][2].split(','),
-            'pregunta_7': preguntas[6][1],
-            'respuesta_7': preguntas[6][2].split(','),
-            'pregunta_8': preguntas[7][1],
-            'respuesta_8': preguntas[7][2].split(','),
-            'pregunta_9': preguntas[8][1],
+            'curso': curso,
+            'lista_preguntas':lista_preguntas
         }
-        print(data)
+        # if preguntas.exists():
+        #     data = {
+        #         # 'curso': curso,
+        #         'pregunta_1': preguntas[0][1],
+        #         'respuesta_1': preguntas[0][2].split(','),
+        #         'pregunta_2': preguntas[1][1],
+        #         'respuesta_2': preguntas[1][2].split(','),
+        #         'pregunta_3': preguntas[2][1],
+        #         'respuesta_3': preguntas[2][2].split(','),
+        #         'pregunta_4': preguntas[3][1],
+        #         'respuesta_4': preguntas[3][2].split(','),
+        #         'pregunta_5': preguntas[4][1],
+        #         'respuesta_5': preguntas[4][2].split(','),
+        #         'pregunta_6': preguntas[5][1],
+        #         'respuesta_6': preguntas[5][2].split(','),
+        #         'pregunta_7': preguntas[6][1],
+        #         'respuesta_7': preguntas[6][2].split(','),
+        #         'pregunta_8': preguntas[7][1],
+        #         'respuesta_8': preguntas[7][2].split(','),
+        #         'pregunta_9': preguntas[8][1],
+        #     }
+        # else:
+        #     data = {
+        #         'curso': 'Error al cargar las encuestas'
+        #     }
+        # print('DATA:'+data)
         
         if request.method == 'POST':
             valores_respuestas_m = [request.POST.get('respuesta1', False), request.POST.get('respuesta2', False), 

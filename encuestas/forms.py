@@ -60,10 +60,9 @@ class empresaForm(forms.ModelForm):
         model = empresaModel
         fields = '__all__'
         
-        def __init__(self, *args, **kwargs):
-            super(empresaForm, self).__init__(*args, **kwargs)
-            self.fields['user'].queryset = User.objects.filter(es_empresa=True,es_alumno=False)
-            print(User.objects.filter(es_empresa=True,es_alumno=False))
+        # def __init__(self, *args, **kwargs):
+        #     super(empresaForm, self).__init__(*args, **kwargs)
+        #     self.fields['user'].queryset = User.objects.filter(es_empresa=True,es_alumno=False)
             
     
 class CustomUserCreationForm(UserCreationForm):

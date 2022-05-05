@@ -14,3 +14,4 @@ class preguntaCursoModel(models.Model):
     class Meta:
         verbose_name = 'PreguntaCurso'
         db_table = 'pregunta_curso'
+        
