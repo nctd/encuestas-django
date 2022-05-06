@@ -32,6 +32,12 @@ def encuesta_satisfaccion_view(request):
             curso_existe = cursoModel.objects.filter(resp_cliente=empresa.empresa_id).exists()
             if curso_existe:
                 curso = cursoModel.objects.get(resp_cliente=empresa.empresa_id)
+                # print(curso.empresa.nombre_empresa)
+                # data_curso = {
+                #     'nombre_empresa': curso.resp_cliente,
+                #     'nombre_curso': curso.nombre_curso
+                # }
+
             else:  
                 data = {
                     'curso': 'La empresa no tiene ningun curso asociado'
@@ -55,7 +61,6 @@ def encuesta_satisfaccion_view(request):
                 'orden': item.orden
             }
             lista_preguntas.append(pregunta)
-            print(pregunta)
         data = {
             'curso': curso,
             'lista_preguntas':lista_preguntas
