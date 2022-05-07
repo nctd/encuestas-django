@@ -25,6 +25,7 @@ def guardarRespuestaEncuestaSatisfaccion(pregunta, respuesta, encuesta, curso):
         'encuesta': encuesta,
         'curso': curso
     }
+    print(data_resp)
     respuesta = RespuestaSatisfaccionForm(data=data_resp)
     if respuesta.is_valid():
         respuesta.save()

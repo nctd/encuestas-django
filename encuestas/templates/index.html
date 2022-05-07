@@ -3,7 +3,8 @@
 {% block content %}
 
 <div class="page-body">
-    <div class="container-xl col-lg-4">
+    <div class="container-xl col-lg-7">
+        {% if curso %}
         <div class="card card-md">
             <div class='card-header'>
                 <h3 class="card-title">Encuestas</h3>
@@ -13,7 +14,7 @@
                     <div class="col-md-12">
                         <div class="form-group row">
 
-                            <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+                            <!-- <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
                                 <label class="form-selectgroup-item flex-fill">
                                     <input type="submit" class="form-selectgroup-input"
                                         onclick="location.href='{% url 'encuesta_satisfaccion' %}'">
@@ -41,12 +42,60 @@
                                         </div>
                                     </div>
                                 </label>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
+                <div class="table-responsive">
+                    <table class="table card-table table-vcenter text-nowrap datatable">
+
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Estado</th>
+                                <!-- <th></th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% if estado_encuesta %}
+                                <td>
+                                    <div class="text-reset" tabindex="-1">Encuesta de Satisfacción
+                                    </div>
+
+                                </td>
+                                <td>
+                                    <span class="badge bg-success me-1"></span> Enviada
+                                </td>
+                                {% else %}
+                                <td>
+                                    <a href="{% url 'encuesta_satisfaccion' %}" class="text-reset"
+                                        tabindex="-1">Encuesta de Satisfacción
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-danger me-1"></span> Pendiente
+                                </td>
+                                {% endif %}
+                                <!-- <td class="text-end">
+                                    <a href="#" class="btn">
+                                        Edit
+                                    </a>
+                                </td> -->
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
             </div>
         </div>
+        {% else %}
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-title">Ocurrió un error&hellip;</h4>
+            <div class="text-muted">Su cuenta no tiene cursos asociados, por favor contacte al
+                administrador.</div>
+        </div>
+        {% endif %}
     </div>
 </div>
 

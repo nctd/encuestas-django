@@ -11,6 +11,8 @@ from .models.encuestaSatisfaccionModel import encuestaSatisfaccionModel
 from .models.empresaModel import empresaModel
 from .models.cursoModel import cursoModel
 
+from .models.alumnoModel import alumnoModel
+
 class CustomUserAdmin(UserAdmin):
     list_display = (
         'username', 'first_name', 'last_name', 'is_staff',
@@ -62,3 +64,4 @@ admin.site.register(empresaModel,empresaAdmin)
 admin.site.register(encuestaSatisfaccionModel)
 admin.site.register(preguntaSatisfaccionModel)
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(alumnoModel)
