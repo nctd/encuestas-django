@@ -428,7 +428,7 @@
                             d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
                     </svg>
                     <h3>Alerta</h3>
-                    <div class="text-muted">Debe completar todos los campos</div>
+                    <div class="text-muted" id="error-content">Debe completar todos los campos</div>
                 </div>
                 <div class="modal-footer">
                     <div class="w-100">
@@ -500,6 +500,7 @@
     });
 </script>
 {% endif %}
+
 <script>
     $("#btn-enviar").on('click', function (e) {
         //alert($("input[type='radio']:checked").length)

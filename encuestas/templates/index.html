@@ -3,49 +3,14 @@
 {% block content %}
 
 <div class="page-body">
+
     <div class="container-xl col-lg-7">
-        {% if curso %}
+        {% if lista_encuestas %}
         <div class="card card-md">
             <div class='card-header'>
                 <h3 class="card-title">Encuestas</h3>
             </div>
             <div class="card-body">
-                <div class="space-y-4">
-                    <div class="col-md-12">
-                        <div class="form-group row">
-
-                            <!-- <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
-                                <label class="form-selectgroup-item flex-fill">
-                                    <input type="submit" class="form-selectgroup-input"
-                                        onclick="location.href='{% url 'encuesta_satisfaccion' %}'">
-                                    <div class="form-selectgroup-label p-3 btn btn-outline-primary active w-100"
-                                        id="group-encuestas">
-                                        <div class="form-selectgroup-label-content d-flex align-items-center">
-                                            <div>
-                                                <div class="font-weight-medium">Encuesta de Satisfacción</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </label>
-
-                                <label class="form-selectgroup-item flex-fill">
-                                    <input type="submit" class="form-selectgroup-input"
-                                        onclick="location.href='{% url 'encuesta_curso' %}'">
-                                    <div class="form-selectgroup-label p-3 btn btn-outline-primary active w-100"
-                                        id="group-encuestas">
-                                        <div class="form-selectgroup-label-content d-flex align-items-center">
-                                            <div>
-                                                <div class="font-weight-medium">Encuesta de Satisfacción del alumno
-                                                    participante
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </label>
-                            </div> -->
-                        </div>
-                    </div>
-                </div>
                 <div class="table-responsive">
                     <table class="table card-table table-vcenter text-nowrap datatable">
 
@@ -57,20 +22,23 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for encuesta in lista_encuestas %}
                             <tr>
-                                {% if estado_encuesta %}
+                                {% if encuesta.estado %}
                                 <td>
-                                    <div class="text-reset" tabindex="-1">Encuesta de Satisfacción
-                                    </div>
-
+                                    <!-- <div class="text-reset" tabindex="-1">Encuesta de Satisfacción
+                                        </div> -->
+                                    <a href="{% url 'encuesta_satisfaccion' encuesta.curso_id %}" class="text-reset"
+                                        tabindex="-1">{{encuesta.nombre_curso}} - Encuesta de Satisfacción
+                                    </a>
                                 </td>
                                 <td>
                                     <span class="badge bg-success me-1"></span> Enviada
                                 </td>
                                 {% else %}
                                 <td>
-                                    <a href="{% url 'encuesta_satisfaccion' %}" class="text-reset"
-                                        tabindex="-1">Encuesta de Satisfacción
+                                    <a href="{% url 'encuesta_satisfaccion' encuesta.curso_id %}" class="text-reset"
+                                        tabindex="-1">{{encuesta.nombre_curso}} - Encuesta de Satisfacción
                                     </a>
                                 </td>
                                 <td>
@@ -78,11 +46,12 @@
                                 </td>
                                 {% endif %}
                                 <!-- <td class="text-end">
-                                    <a href="#" class="btn">
-                                        Edit
-                                    </a>
-                                </td> -->
+                                        <a href="#" class="btn">
+                                            Edit
+                                        </a>
+                                    </td> -->
                             </tr>
+                            {% endfor %}
                         </tbody>
 
                     </table>
@@ -99,5 +68,50 @@
     </div>
 </div>
 
+
+
+
+
+{% if messages %}
+<div class="modal modal-blur fade" id="modal-info" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-info"></div>
+            <div class="modal-body text-center py-4">
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-info icon-lg" width="24" height="24"
+                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 9v2m0 4v.01" />
+                    <path
+                        d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
+                </svg>
+                <h3>Información</h3>
+                <div class="text-muted" id="info-content"></div>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+
+                        <div class="col"><a href="#" class="btn btn-info w-100" data-bs-dismiss="modal">
+                                OK
+                            </a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% for m in messages %}
+<script>
+    $(document).ready(function () {
+        $("#modal-info").modal('show');
+        $('#info-content').text('{{m}}')
+    });
+</script>
+{% endfor %}
+{% endif %}
 
 {% endblock %}

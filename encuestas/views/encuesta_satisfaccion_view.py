@@ -1,5 +1,6 @@
+from urllib import response
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -13,39 +14,54 @@ from encuestas.views.utils.utils import guardarRespuestaEncuestaSatisfaccion, va
 
 
 @login_required(login_url='/auth/login_user')
-def encuesta_satisfaccion_view(request):
+def encuesta_satisfaccion_view(request,curso_id):
     # ESTA ENCUESTA, SOLO LA RESPONDEN LAS EMPRESAS
     try:
+        print(curso_id)
+        print('****************')
         current_user = request.user
         
         empresa_existe = empresaModel.objects.filter(user=current_user.id).exists()
         if not empresa_existe:
             # Exception('ERROR')
-            return render(request,'encuestas/encuesta_satisfaccion.html', data)
+            return render(request,'home')
         
         empresa = empresaModel.objects.get(user=current_user.id)
-        curso_existe = cursoModel.objects.filter(resp_cliente=empresa.empresa_id).exists()
         
+        curso_existe = cursoModel.objects.filter(curso_id=curso_id).exists()
         if not curso_existe:
             # Exception('ERROR')
-            return render(request,'encuestas/encuesta_satisfaccion.html', data)
+            return render(request,'home')
         
-        curso = cursoModel.objects.get(resp_cliente=empresa.empresa_id)
+        curso = cursoModel.objects.get(curso_id=curso_id)
+        
         encuesta_existe = encuestaSatisfaccionModel.objects.filter(curso=curso.curso_id).exists()
-        
+
         if not encuesta_existe:
             # Exception('ERROR')
-            return render(request,'encuestas/encuesta_satisfaccion.html', data)
+            return render(request,'home')
         
         encuesta = encuestaSatisfaccionModel.objects.get(curso=curso.curso_id)
 
+        respuesta_existe = respuestaSatisfaccionModel.objects.filter(encuesta=encuesta.encuesta_id).exists()
+        if respuesta_existe:
+            messages.info(request,'La encuesta ya fue enviada')
+            return redirect(to='home')
+            # data = {
+            #     'error': True,
+            #     'mensaje': 'La encuesta ya fue contestada',
+            #     'status': 400
+            # }
+            # return render(request, 'error/error.html',data, status=400)
+
         preguntas = preguntaSatisfaccionModel.objects.filter(encuesta=encuesta.encuesta_id)
-        
+
         if preguntas.count == 0:
             data = {
                 'error_preguntas': 'El curso no tiene una encuesta asociada'
             }
             return render(request,'encuestas/encuesta_satisfaccion.html', data)
+
 
         lista_preguntas = []
         for item in preguntas:
@@ -59,12 +75,9 @@ def encuesta_satisfaccion_view(request):
             'curso': curso,
             'lista_preguntas':lista_preguntas
         }
-
+        print(data)
         try:
             if request.method == 'POST':
-                respuesta_existe = respuestaSatisfaccionModel.objects.filter(encuesta=encuesta.encuesta_id).exists()
-                if respuesta_existe:
-                    return HttpResponse('YA ENVIO SUS RESPUESTAS')
                 valores_respuestas_m = [request.POST.get('respuesta1', False), request.POST.get('respuesta2', False), 
                                         request.POST.get('respuesta3', False), request.POST.get('respuesta4', False)]
                 valores_respuestas_sn = [request.POST.get('respuesta5', False), request.POST.get('respuesta6', False),
@@ -91,13 +104,26 @@ def encuesta_satisfaccion_view(request):
                     guardarRespuestaEncuestaSatisfaccion(pregunta8, request.POST['respuesta8'], encuesta.encuesta_id,curso.curso_id)
                     guardarRespuestaEncuestaSatisfaccion(pregunta9, request.POST['respuesta9'], encuesta.encuesta_id,curso.curso_id)
                 else:
-                    data['error'] = True
-                    # return render(request,'encuestas/encuesta_satisfaccion.html', data)
-                    return HttpResponse('ERROR AL VALIDAR LAS RESPUESTAS')
+                    data = {
+                        'error': True,
+                        'mensaje': 'No se validaron las respuestas en el servidor',
+                        'status': 400
+                    }
+                    return render(request, 'error/error.html',data, status=400)
         except:
-            return HttpResponse('ERROR AL GUARDAR LAS RESPUESTAS')
+            data = {
+                'error': True,
+                'mensaje': 'No se guardaron las respuestas',
+                'status': 400
+            }
+            return render(request, 'error/error.html',data, status=400)
 
         return render(request, 'encuestas/encuesta_satisfaccion.html', data)
     
     except:
-        return HttpResponse("ERROR:TRY")
+        data = {
+            'error': True,
+            'mensaje': 'No se cargaron los datos de la encuesta, por favor contacte al administrador',
+            'status': 400
+        }
+        return render(request, 'error/error.html',data, status=400)

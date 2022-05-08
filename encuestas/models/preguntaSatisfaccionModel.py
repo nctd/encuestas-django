@@ -20,7 +20,7 @@ class preguntaSatisfaccionModel(models.Model):
         
         
 @receiver(post_save, sender=encuestaSatisfaccionModel)   
-def crear_encuesta(sender, instance, created, **kwargs):
+def crear_preguntas(sender, instance, created, **kwargs):
     if created:
         preguntaSatisfaccionModel.objects.create(pregunta='¿Cómo fue la atención general que se le brindó?',
                                                  valor='Deficiente,Malo,Regular,Bueno,Excelente',

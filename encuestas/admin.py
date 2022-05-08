@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from encuestas.forms import empresaForm
+from encuestas.models.alumnoCursoModel import alumnoCursoModel
 
 from .models.userModel import User
 from .models.preguntaSatisfaccionModel import preguntaSatisfaccionModel
@@ -65,3 +66,4 @@ admin.site.register(encuestaSatisfaccionModel)
 admin.site.register(preguntaSatisfaccionModel)
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(alumnoModel)
+admin.site.register(alumnoCursoModel)
