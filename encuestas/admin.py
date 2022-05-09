@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 
 from encuestas.forms import empresaForm
 from encuestas.models.alumnoCursoModel import alumnoCursoModel
+from encuestas.models.cursoEncuestaModel import cursoEncuestaModel
 
 from .models.userModel import User
 from .models.preguntaSatisfaccionModel import preguntaSatisfaccionModel
@@ -59,11 +60,18 @@ class empresaAdmin(admin.ModelAdmin):
         if db_field.name == "user":
             kwargs["queryset"] = User.objects.filter(es_empresa=True,es_alumno=False)
         return super(empresaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+    
+class preguntaSatisfaccionInLine(admin.TabularInline):
+    model = preguntaSatisfaccionModel
+
+class encuestaSatisfaccionAdmin(admin.ModelAdmin):
+    inlines = [preguntaSatisfaccionInLine]
 
 admin.site.register(cursoModel)
 admin.site.register(empresaModel,empresaAdmin)
-admin.site.register(encuestaSatisfaccionModel)
+admin.site.register(encuestaSatisfaccionModel,encuestaSatisfaccionAdmin)
 admin.site.register(preguntaSatisfaccionModel)
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(alumnoModel)
 admin.site.register(alumnoCursoModel)
+admin.site.register(cursoEncuestaModel)

@@ -3,14 +3,15 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from encuestas.models.empresaModel import empresaModel
+from encuestas.models.respuestaAlumnoModel import respuestaAlumnoModel
 # from django.contrib.auth.models import User
 from .models.userModel import User
 
 from .models.respuestaSatisfaccionModel import respuestaSatisfaccionModel
 from .models.encuestaSatisfaccionModel import encuestaSatisfaccionModel
-from .models.encuestaCursoModel import encuestaCursoModel
+from .models.encuestaAlumnoModel import encuestaAlumnoModel
 from .models.alumnoModel import alumnoModel
-from .models.preguntaCursoModel import preguntaCursoModel
+from .models.preguntaAlumnoModel import preguntaAlumnoModel
 from .models.alumnoCursoModel import alumnoCursoModel
 from .models.cursoModel import cursoModel
 
@@ -24,11 +25,6 @@ class RespuestaSatisfaccionForm(forms.ModelForm):
         model = respuestaSatisfaccionModel
         fields = '__all__'    
         
-class cursoEncuestaForm(forms.ModelForm):
-    class Meta:
-        model = encuestaCursoModel
-        fields = '__all__'
-        
 class cursoForm(forms.ModelForm):
     class Meta:
         model = cursoModel
@@ -41,13 +37,18 @@ class alumnoForm(forms.ModelForm):
         
 class EncuestaCursoForm(forms.ModelForm):
     class Meta:
-        model = encuestaCursoModel
+        model = encuestaAlumnoModel
         fields = '__all__'
         
 class PreguntaCursoForm(forms.ModelForm):
     class Meta:
-        model = preguntaCursoModel
+        model = preguntaAlumnoModel
         fields = '__all__'    
+
+class RespuestaCursoForm(forms.ModelForm):
+    class Meta:
+        model = respuestaAlumnoModel
+        fields = '__all__'  
 
 class alumnoCursoForm(forms.ModelForm):
     class Meta:

@@ -15,7 +15,7 @@ class alumnoModel(models.Model):
     nombre_completo = models.CharField(max_length=150,blank=False)
     correo = models.CharField(max_length=150)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    curso = models.ForeignKey(cursoModel,on_delete=models.CASCADE)
+    # curso = models.ForeignKey(cursoModel,on_delete=models.CASCADE)
     
     class Meta:
         verbose_name = 'alumno'

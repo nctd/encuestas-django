@@ -9,8 +9,9 @@ from django.conf.urls import handler400
 
 urlpatterns = [
     path('',home,name='home'),
-    path('encuesta_satisfaccion/<curso_id>/', encuesta_satisfaccion_view, name='encuesta_satisfaccion'),
-    path('encuesta_curso', encuesta_curso_view, name='encuesta_curso'),
+    path('encuesta_satisfaccion/<encuesta_id>/', encuesta_satisfaccion_view, name='encuesta_satisfaccion'),
+    # path('encuesta_curso/<encuesta_id>/', encuesta_curso_view, name='encuesta_curso'),
+    path('encuesta_curso/<encuesta_id>/', encuesta_curso_view, name='encuesta_curso'),
 ]
 
 handler400 = error400Handler.as_view()

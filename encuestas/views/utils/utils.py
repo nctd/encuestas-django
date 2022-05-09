@@ -1,6 +1,7 @@
-from msilib.schema import Error
+from django.contrib import messages
+
 from encuestas.models import cursoModel
-from ...forms import PreguntaCursoForm, RespuestaSatisfaccionForm
+from ...forms import RespuestaCursoForm, RespuestaSatisfaccionForm
 
 def validarRespuestaEncuesta(value, type_value):
     if(type_value == 'M'):
@@ -18,12 +19,11 @@ def validarRespuestaEncuesta(value, type_value):
     return False
 
 
-def guardarRespuestaEncuestaSatisfaccion(pregunta, respuesta, encuesta, curso):
+def guardarRespuestaEncuestaSatisfaccion(pregunta, respuesta, encuesta):
     data_resp = {
         'pregunta': pregunta,
         'respuesta': respuesta,
         'encuesta': encuesta,
-        'curso': curso
     }
     print(data_resp)
     respuesta = RespuestaSatisfaccionForm(data=data_resp)
@@ -36,15 +36,25 @@ def validarCurso(curso_id,nombre_curso):
         return True 
     return False
 
-def guardarRespuestaEncuestaCurso(pregunta, respuesta, id_encuesta, alumno):
-    data_preg = {
-        'pregunta': pregunta,
-        'respuesta': respuesta,
-        'e_curso': id_encuesta,
-        'alumno': alumno
+def guardarRespuestaEncuestaCurso(pregunta, respuesta, encuesta_id):
+    try:
+        data_preg = {
+            'pregunta': pregunta,
+            'respuesta': respuesta,
+            'encuesta_curso': encuesta_id,
+        }
+
+        pregunta = RespuestaCursoForm(data=data_preg)
+        if pregunta.is_valid():
+            pregunta.save()
+    except:
+        raise
+    
+    
+def generarError(render,request,mensaje,status):
+    data = {
+        'error': True,
+        'mensaje': mensaje,
+        'status': status
     }
-    pregunta = PreguntaCursoForm(data=data_preg)
-    if pregunta.is_valid():
-        pregunta.save()
-    else:
-        return Exception('ERROR')
+    return render(request, 'error/error.html',data, status=status)       

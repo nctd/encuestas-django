@@ -16,20 +16,25 @@
 
                         <thead>
                             <tr>
+                                <th>Curso</th>
                                 <th>Nombre</th>
                                 <th>Estado</th>
                                 <!-- <th></th> -->
                             </tr>
                         </thead>
                         <tbody>
+                            {% if empresa %}
                             {% for encuesta in lista_encuestas %}
                             <tr>
+                                <td>
+                                    {{encuesta.nombre_curso}}
+                                </td>
                                 {% if encuesta.estado %}
                                 <td>
                                     <!-- <div class="text-reset" tabindex="-1">Encuesta de Satisfacción
                                         </div> -->
-                                    <a href="{% url 'encuesta_satisfaccion' encuesta.curso_id %}" class="text-reset"
-                                        tabindex="-1">{{encuesta.nombre_curso}} - Encuesta de Satisfacción
+                                    <a href="{% url 'encuesta_satisfaccion' encuesta.encuesta_id %}" class="text-reset"
+                                        tabindex="-1">Encuesta de Satisfacción
                                     </a>
                                 </td>
                                 <td>
@@ -37,8 +42,8 @@
                                 </td>
                                 {% else %}
                                 <td>
-                                    <a href="{% url 'encuesta_satisfaccion' encuesta.curso_id %}" class="text-reset"
-                                        tabindex="-1">{{encuesta.nombre_curso}} - Encuesta de Satisfacción
+                                    <a href="{% url 'encuesta_satisfaccion' encuesta.encuesta_id %}" class="text-reset"
+                                        tabindex="-1">Encuesta de Satisfacción
                                     </a>
                                 </td>
                                 <td>
@@ -52,6 +57,51 @@
                                     </td> -->
                             </tr>
                             {% endfor %}
+                            {% endif %}
+
+                            {% if alumno %}
+                            {% for encuesta in lista_encuestas %}
+                            <tr>
+                                <td>
+                                    {{encuesta.nombre_curso}}
+                                </td>
+                                {% if encuesta.estado %}
+                                <td>
+                                    <!-- <div class="text-reset" tabindex="-1">Encuesta de Satisfacción
+                                                                    </div> -->
+                                    <a href="{% url 'encuesta_curso' encuesta.encuesta_id%}" class="text-reset"
+                                        tabindex="-1">Encuesta de
+                                        Satisfacción del alumno
+                                        participante
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success me-1"></span> Enviada
+                                </td>
+                                {% else %}
+                                <td>
+                                    <a href="{% url 'encuesta_curso' encuesta.encuesta_id%}" class="text-reset"
+                                        tabindex="-1">Encuesta de
+                                        Satisfacción del alumno
+                                        participante
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-danger me-1"></span> Pendiente
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+
+                            {% if not empresa and not alumno %}
+                            <tr>
+                                <td>
+                                    No se encontraron encuestas asociadas al usuario...
+                                </td>
+                                <td></td>
+                            </tr>
+                            {% endif %}
                         </tbody>
 
                     </table>
@@ -104,13 +154,56 @@
         </div>
     </div>
 </div>
+<div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-success"></div>
+            <div class="modal-body text-center py-4">
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-success icon-lg" width="24" height="24"
+                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 9v2m0 4v.01" />
+                    <path
+                        d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
+                </svg>
+                <h3>Información</h3>
+                <div class="text-muted" id="info-content"></div>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+
+                        <div class="col"><a href="#" class="btn btn-success w-100" data-bs-dismiss="modal">
+                                OK
+                            </a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% for m in messages %}
+{% if 'success' in message.tags %}
+<script>
+    $(document).ready(function () {
+        $("#modal-success").modal('show');
+        $('#info-content').text('{{m}}')
+    });
+</script>
+
+{%else %}
 <script>
     $(document).ready(function () {
         $("#modal-info").modal('show');
         $('#info-content').text('{{m}}')
     });
 </script>
+{% endif %}
+
+
 {% endfor %}
 {% endif %}
 

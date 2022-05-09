@@ -1,8 +1,8 @@
-from urllib import response
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from encuestas.models.cursoEncuestaModel import cursoEncuestaModel
 
 from encuestas.models.cursoModel import cursoModel
 from encuestas.models.respuestaSatisfaccionModel import respuestaSatisfaccionModel
@@ -14,34 +14,29 @@ from encuestas.views.utils.utils import guardarRespuestaEncuestaSatisfaccion, va
 
 
 @login_required(login_url='/auth/login_user')
-def encuesta_satisfaccion_view(request,curso_id):
+def encuesta_satisfaccion_view(request,encuesta_id):
     # ESTA ENCUESTA, SOLO LA RESPONDEN LAS EMPRESAS
     try:
-        print(curso_id)
-        print('****************')
-        current_user = request.user
-        
-        empresa_existe = empresaModel.objects.filter(user=current_user.id).exists()
-        if not empresa_existe:
-            # Exception('ERROR')
-            return render(request,'home')
-        
-        empresa = empresaModel.objects.get(user=current_user.id)
-        
-        curso_existe = cursoModel.objects.filter(curso_id=curso_id).exists()
-        if not curso_existe:
-            # Exception('ERROR')
-            return render(request,'home')
-        
-        curso = cursoModel.objects.get(curso_id=curso_id)
-        
-        encuesta_existe = encuestaSatisfaccionModel.objects.filter(curso=curso.curso_id).exists()
-
+        encuesta_existe = encuestaSatisfaccionModel.objects.filter(encuesta_id=encuesta_id).exists()
         if not encuesta_existe:
-            # Exception('ERROR')
             return render(request,'home')
+        try:
+            current_user = request.user
+            empresa = empresaModel.objects.get(user=current_user.id)
+            curso = cursoModel.objects.filter(empresa_id=empresa.empresa_id)
+            for item in curso:
+                print(item)
+                curso_encuesta = cursoEncuestaModel.objects.get(curso_id=item.curso_id,encuesta_id=encuesta_id)
+                print(curso_encuesta)
+        except:
+            data = {
+                'error': True,
+                'mensaje': 'El curso no coindice con el asociado a la encuesta',
+                'status': 403,
+            }
+            return render(request, 'error/error.html',data, status=403)
         
-        encuesta = encuestaSatisfaccionModel.objects.get(curso=curso.curso_id)
+        encuesta = encuestaSatisfaccionModel.objects.get(encuesta_id=encuesta_id)
 
         respuesta_existe = respuestaSatisfaccionModel.objects.filter(encuesta=encuesta.encuesta_id).exists()
         if respuesta_existe:
@@ -75,7 +70,6 @@ def encuesta_satisfaccion_view(request,curso_id):
             'curso': curso,
             'lista_preguntas':lista_preguntas
         }
-        print(data)
         try:
             if request.method == 'POST':
                 valores_respuestas_m = [request.POST.get('respuesta1', False), request.POST.get('respuesta2', False), 
@@ -94,15 +88,15 @@ def encuesta_satisfaccion_view(request,curso_id):
                 pregunta9 = preguntas.get(orden=9).pregunta
 
                 if(validarRespuestaEncuesta(valores_respuestas_m, 'M') and validarRespuestaEncuesta(valores_respuestas_sn, 'SN')):
-                    guardarRespuestaEncuestaSatisfaccion(pregunta1, request.POST['respuesta1'], encuesta.encuesta_id,curso.curso_id)
-                    guardarRespuestaEncuestaSatisfaccion(pregunta2, request.POST['respuesta2'], encuesta.encuesta_id,curso.curso_id)
-                    guardarRespuestaEncuestaSatisfaccion(pregunta3, request.POST['respuesta3'], encuesta.encuesta_id,curso.curso_id)
-                    guardarRespuestaEncuestaSatisfaccion(pregunta4, request.POST['respuesta4'], encuesta.encuesta_id,curso.curso_id)
-                    guardarRespuestaEncuestaSatisfaccion(pregunta5, request.POST['respuesta5'], encuesta.encuesta_id,curso.curso_id)
-                    guardarRespuestaEncuestaSatisfaccion(pregunta6, request.POST['respuesta6'], encuesta.encuesta_id,curso.curso_id)
-                    guardarRespuestaEncuestaSatisfaccion(pregunta7, request.POST['respuesta7'], encuesta.encuesta_id,curso.curso_id)
-                    guardarRespuestaEncuestaSatisfaccion(pregunta8, request.POST['respuesta8'], encuesta.encuesta_id,curso.curso_id)
-                    guardarRespuestaEncuestaSatisfaccion(pregunta9, request.POST['respuesta9'], encuesta.encuesta_id,curso.curso_id)
+                    guardarRespuestaEncuestaSatisfaccion(pregunta1, request.POST['respuesta1'], encuesta.encuesta_id)
+                    guardarRespuestaEncuestaSatisfaccion(pregunta2, request.POST['respuesta2'], encuesta.encuesta_id)
+                    guardarRespuestaEncuestaSatisfaccion(pregunta3, request.POST['respuesta3'], encuesta.encuesta_id)
+                    guardarRespuestaEncuestaSatisfaccion(pregunta4, request.POST['respuesta4'], encuesta.encuesta_id)
+                    guardarRespuestaEncuestaSatisfaccion(pregunta5, request.POST['respuesta5'], encuesta.encuesta_id)
+                    guardarRespuestaEncuestaSatisfaccion(pregunta6, request.POST['respuesta6'], encuesta.encuesta_id)
+                    guardarRespuestaEncuestaSatisfaccion(pregunta7, request.POST['respuesta7'], encuesta.encuesta_id)
+                    guardarRespuestaEncuestaSatisfaccion(pregunta8, request.POST['respuesta8'], encuesta.encuesta_id)
+                    guardarRespuestaEncuestaSatisfaccion(pregunta9, request.POST['respuesta9'], encuesta.encuesta_id)
                 else:
                     data = {
                         'error': True,

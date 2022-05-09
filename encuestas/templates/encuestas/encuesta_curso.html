@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if encuesta %}
 <div class="page-wrapper">
     <div class="container-xl col-lg-7">
         <!-- Page title -->
@@ -64,64 +65,73 @@
             <div class="card card-md">
                 <div class="card-body">
                     <div class="form-group mb-3 row">
-                        <label class="form-label col-lg-3 col-form-label">Nombre del curso:</label>
+                        <label class="form-label col-lg-3 col-form-label">Nombre de la Empresa Cliente:</label>
                         <div class="col-lg-6">
-                            <select class="form-select" name="curso">
-                                {% for item in cursos %}
-                                <option value="{{item.curso_id}}-{{item.nombre_curso}}">
-                                    {{item.nombre_curso}}</option>
-                                {% endfor %}
-
-                            </select>
+                            <input type="text" class="form-control" readonly
+                                value="{{curso.resp_cliente.nombre_empresa}}">
                         </div>
                     </div>
                     <div class="form-group mb-3 row">
-                        <label class="form-label col-lg-3 col-form-label">Nombre del Relator:</label>
+                        <label class="form-label col-lg-3 col-form-label">Curso:</label>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control" name="relator">
+                            <input type="text" class="form-control" readonly value="{{curso.nombre_curso}}">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label class="form-label col-lg-3 col-form-label">Nombre del relator:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" readonly
+                                value="{{curso.resp_cliente.nombre_responsable}}">
                         </div>
                     </div>
                     <div class="form-group mb-3 row">
                         <label class="form-label col-lg-3 col-form-label">Empresa Participante:</label>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control" name="empresa_participante">
-                        </div>
-                    </div>
-                    <div class="form-group mb-3 row">
-                        <label class="form-label col-lg-3 col-form-label">Nombre Alumno:</label>
-                        <div class="col-lg-6">
-                            <input type="text" class="form-control" name="nombre_alumno">
+                            <input type="text" class="form-control" readonly value="{{curso.resp_exsol}}">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="form-label col-3 col-form-label">Fecha:</label>
+                        <label class="form-label col-lg-3 col-form-label">Nombre alumno:</label>
                         <div class="col-lg-6">
-                            <div class="input-icon">
-                                <span class="input-icon-addon">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <rect x="4" y="5" width="16" height="16" rx="2" />
-                                        <line x1="16" y1="3" x2="16" y2="7" />
-                                        <line x1="8" y1="3" x2="8" y2="7" />
-                                        <line x1="4" y1="11" x2="20" y2="11" />
-                                        <line x1="11" y1="15" x2="12" y2="15" />
-                                        <line x1="12" y1="15" x2="12" y2="18" />
-                                    </svg>
-                                </span>
-                                <input class="form-control" placeholder="Fecha" id="fecha-satisfaccion"
-                                    name='fecha-satisfaccion' type='text' autocomplete="off" />
-                            </div>
+                            <input type="text" class="form-control" readonly value="{{curso.resp_exsol}}">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    {% else %}
+    <div class="page-wrapper">
+        <div class="container-xl col-lg-7">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md-auto">
+                        <h2 class="page-title">
+                            {{error_preguntas}}
+                        </h2>
+                    </div>
+                    <div class="col-md-auto ms-auto d-print-none">
+                        <div class="btn-list">
+                            <a class="btn" href="{% url 'home' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="icon icon-tabler icon-tabler-arrow-back-up" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M9 13l-4 -4l4 -4m-4 4h11a4 4 0 0 1 0 8h-1"></path>
+                                </svg>
+                                Atrás
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
-
+    {%if lista_preguntas.0.pregunta and lista_preguntas.1.pregunta %}
     <div class="page-body">
         <div class="container-xl col-lg-7">
             <div class="card card-md">
@@ -133,11 +143,11 @@
                         <div class="col-md-12">
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">1. {{pregunta_1}}
+                                    <h3 class="mb-3">1. {{lista_preguntas.0.pregunta}}
                                     </h3>
                                 </div>
                                 <div class="row mb-3">
-                                    {% for resp in respuestas %}
+                                    {% for resp in lista_preguntas.0.respuesta %}
                                     <div class="col-sm-2">
                                         <label class="radio">
                                             <input type="radio" name="respuesta1" id="respuesta1" value={{resp}}>
@@ -148,11 +158,11 @@
                                 </div>
                                 <!--  PREGUNTA 2  -->
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">2. {{pregunta_2}}
+                                    <h3 class="mb-3">2. {{lista_preguntas.1.pregunta}}
                                     </h3>
                                 </div>
                                 <div class="row">
-                                    {% for resp in respuestas %}
+                                    {% for resp in lista_preguntas.1.respuesta %}
                                     <div class="col-sm-2">
                                         <label class="radio">
                                             <input type="radio" name="respuesta2" id="respuesta2" value={{resp}}>
@@ -168,7 +178,9 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
+    {%if lista_preguntas.2.pregunta and lista_preguntas.3.pregunta and lista_preguntas.4.pregunta %}
     <div class="page-body">
         <div class="container-xl col-lg-7">
             <div class="card card-md">
@@ -180,11 +192,11 @@
                         <div class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">3. {{pregunta_3}}
+                                    <h3 class="mb-3">3. {{lista_preguntas.2.pregunta}}
                                     </h3>
                                 </div>
                                 <div class="row mb-3">
-                                    {% for resp in respuestas %}
+                                    {% for resp in lista_preguntas.2.respuesta %}
                                     <div class="col-sm-2">
                                         <label class="radio">
                                             <input type="radio" name="respuesta3" id="respuesta3" value={{resp}}>
@@ -194,11 +206,11 @@
                                     {% endfor %}
                                 </div>
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">4. {{pregunta_4}}
+                                    <h3 class="mb-3">4. {{lista_preguntas.3.pregunta}}
                                     </h3>
                                 </div>
                                 <div class="row mb-3">
-                                    {% for resp in respuestas %}
+                                    {% for resp in lista_preguntas.3.respuesta %}
                                     <div class="col-sm-2">
                                         <label class="radio">
                                             <input type="radio" name="respuesta4" id="respuesta4" value={{resp}}>
@@ -208,11 +220,11 @@
                                     {% endfor %}
                                 </div>
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">5. {{pregunta_5}}
+                                    <h3 class="mb-3">5. {{lista_preguntas.4.pregunta}}
                                     </h3>
                                 </div>
                                 <div class="row">
-                                    {% for resp in respuestas %}
+                                    {% for resp in lista_preguntas.4.respuesta %}
                                     <div class="col-sm-2">
                                         <label class="radio">
                                             <input type="radio" name="respuesta5" id="respuesta5" value={{resp}}>
@@ -228,7 +240,9 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
+    {%if lista_preguntas.5.pregunta and lista_preguntas.6.pregunta %}
     <div class="page-body">
         <div class="container-xl col-lg-7">
             <div class="card card-md">
@@ -240,11 +254,11 @@
                         <div class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">6. {{pregunta_6}}
+                                    <h3 class="mb-3">6. {{lista_preguntas.5.pregunta}}
                                     </h3>
                                 </div>
                                 <div class="row mb-3">
-                                    {% for resp in respuestas %}
+                                    {% for resp in lista_preguntas.5.respuesta %}
                                     <div class="col-sm-2">
                                         <label class="radio">
                                             <input type="radio" name="respuesta6" id="respuesta6" value={{resp}}>
@@ -254,11 +268,11 @@
                                     {% endfor %}
                                 </div>
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">7. {{pregunta_7}}
+                                    <h3 class="mb-3">7. {{lista_preguntas.6.pregunta}}
                                     </h3>
                                 </div>
                                 <div class="row">
-                                    {% for resp in respuestas %}
+                                    {% for resp in lista_preguntas.6.respuesta %}
                                     <div class="col-sm-2">
                                         <label class="radio">
                                             <input type="radio" name="respuesta7" id="respuesta7" value={{resp}}>
@@ -274,7 +288,9 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
+    {%if lista_preguntas.7.pregunta and lista_preguntas.8.pregunta %}
     <div class="page-body">
         <div class="container-xl col-lg-7">
             <div class="card card-md">
@@ -286,11 +302,11 @@
                         <div class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">8. {{pregunta_8}}
+                                    <h3 class="mb-3">8. {{lista_preguntas.7.pregunta}}
                                     </h3>
                                 </div>
                                 <div class="row mb-3">
-                                    {% for resp in respuestas %}
+                                    {% for resp in lista_preguntas.7.respuesta %}
                                     <div class="col-sm-2">
                                         <label class="radio">
                                             <input type="radio" name="respuesta8" id="respuesta8" value={{resp}}>
@@ -300,11 +316,11 @@
                                     {% endfor %}
                                 </div>
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">9. {{pregunta_9}}
+                                    <h3 class="mb-3">9. {{lista_preguntas.8.pregunta}}
                                     </h3>
                                 </div>
                                 <div class="row">
-                                    {% for resp in respuestas %}
+                                    {% for resp in lista_preguntas.8.respuesta %}
                                     <div class="col-sm-2">
                                         <label class="radio">
                                             <input type="radio" name="respuesta9" id="respuesta9" value={{resp}}>
@@ -320,7 +336,9 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
+    {%if lista_preguntas.9.pregunta and lista_preguntas.10.pregunta and lista_preguntas.11.pregunta %}
     <div class="page-body">
         <div class="container-xl col-lg-7">
             <div class="card card-md">
@@ -332,11 +350,11 @@
                         <div class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">10. {{pregunta_10}}
+                                    <h3 class="mb-3">10. {{lista_preguntas.9.pregunta}}
                                     </h3>
                                 </div>
                                 <div class="row mb-3">
-                                    {% for resp in respuestas %}
+                                    {% for resp in lista_preguntas.9.respuesta %}
                                     <div class="col-sm-2">
                                         <label class="radio">
                                             <input type="radio" name="respuesta10" id="respuesta10" value={{resp}}>
@@ -346,11 +364,11 @@
                                     {% endfor %}
                                 </div>
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">11. {{pregunta_11}}
+                                    <h3 class="mb-3">11. {{lista_preguntas.10.pregunta}}
                                     </h3>
                                 </div>
                                 <div class="row mb-3">
-                                    {% for resp in respuestas %}
+                                    {% for resp in lista_preguntas.10.respuesta %}
                                     <div class="col-sm-2">
                                         <label class="radio">
                                             <input type="radio" name="respuesta11" id="respuesta11" value={{resp}}>
@@ -360,11 +378,11 @@
                                     {% endfor %}
                                 </div>
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">12. {{pregunta_12}}
+                                    <h3 class="mb-3">12. {{lista_preguntas.11.pregunta}}
                                     </h3>
                                 </div>
                                 <div class="row">
-                                    {% for resp in respuestas %}
+                                    {% for resp in lista_preguntas.11.respuesta %}
                                     <div class="col-sm-2">
                                         <label class="radio">
                                             <input type="radio" name="respuesta12" id="respuesta12" value={{resp}}>
@@ -380,7 +398,9 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
+    {%if lista_preguntas.12.pregunta %}
     <div class="page-body">
         <div class="container-xl col-lg-7">
             <div class="card card-md">
@@ -392,7 +412,7 @@
                         <div class="col-lg-12">
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <h3 class="mb-3">13. {{pregunta_13}}
+                                    <h3 class="mb-3">13. {{lista_preguntas.12.pregunta}}
                                     </h3>
                                 </div>
                                 <div>
@@ -407,8 +427,10 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
     </form>
+
     <div class="modal modal-blur fade" id="modal-error" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
