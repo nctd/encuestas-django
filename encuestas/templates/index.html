@@ -33,8 +33,8 @@
                                 <td>
                                     <!-- <div class="text-reset" tabindex="-1">Encuesta de Satisfacción
                                         </div> -->
-                                    <a href="{% url 'encuesta_satisfaccion' encuesta.encuesta_id %}" class="text-reset"
-                                        tabindex="-1">Encuesta de Satisfacción
+                                    <a href="{% url 'encuesta_satisfaccion' encuesta_id=encuesta.encuesta_id curso_id=encuesta.curso_id %}"
+                                        class="text-reset" tabindex="-1">Encuesta de Satisfacción
                                     </a>
                                 </td>
                                 <td>
@@ -42,8 +42,8 @@
                                 </td>
                                 {% else %}
                                 <td>
-                                    <a href="{% url 'encuesta_satisfaccion' encuesta.encuesta_id %}" class="text-reset"
-                                        tabindex="-1">Encuesta de Satisfacción
+                                    <a href="{% url 'encuesta_satisfaccion' encuesta_id=encuesta.encuesta_id curso_id=encuesta.curso_id %}"
+                                        class="text-reset" tabindex="-1">Encuesta de Satisfacción
                                     </a>
                                 </td>
                                 <td>

@@ -25,17 +25,20 @@ def home(request):
             
             lista_encuestas = []
             for item in curso:
-                print(item)
-                curso_encuesta = cursoEncuestaModel.objects.get(curso_id=item.curso_id)
-                encuesta = encuestaSatisfaccionModel.objects.get(encuesta_id=curso_encuesta.encuesta_id)
-                estado = respuestaSatisfaccionModel.objects.filter(encuesta=encuesta.encuesta_id).exists()
+                curso_encuesta = cursoEncuestaModel.objects.filter(curso_id=item.curso_id)
+                for value in curso_encuesta:
+                    encuesta = encuestaSatisfaccionModel.objects.get(encuesta_id=value.encuesta_id)
 
-                data_encuesta = {
-                    'estado': estado,
-                    'nombre_curso': item.nombre_curso,
-                    'encuesta_id': curso_encuesta.encuesta_id
-                }
-                lista_encuestas.append(data_encuesta)
+                        
+                    estado = respuestaSatisfaccionModel.objects.filter(encuesta=encuesta.encuesta_id,curso=item.curso_id).exists()
+
+                    data_encuesta = {
+                        'estado': estado,
+                        'nombre_curso': item.nombre_curso,
+                        'curso_id': value.curso_id,
+                        'encuesta_id': value.encuesta_id
+                    }
+                    lista_encuestas.append(data_encuesta)
                 
             data = {
                 'lista_encuestas': lista_encuestas,

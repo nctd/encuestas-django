@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% if curso %}
+{% if curso and encuesta %}
 <div class="page-wrapper">
     <div class="container-xl col-lg-7">
         <!-- Page title -->
@@ -67,8 +67,7 @@
                     <div class="form-group mb-3 row">
                         <label class="form-label col-lg-3 col-form-label">Nombre de la Empresa Cliente:</label>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control" readonly
-                                value="{{curso.resp_cliente.nombre_empresa}}">
+                            <input type="text" class="form-control" readonly value="{{curso.empresa.nombre_empresa}}">
                         </div>
                     </div>
 
@@ -116,7 +115,7 @@
                         <label class="form-label col-lg-3 col-form-label">Responsable cliente:</label>
                         <div class="col-lg-6">
                             <input type="text" class="form-control" readonly
-                                value="{{curso.resp_cliente.nombre_responsable}}">
+                                value="{{curso.empresa.nombre_responsable}}">
                         </div>
                     </div>
                     <div class="form-group mb-3 row">
@@ -128,8 +127,8 @@
                     <div class="form-group row">
                         <label class="form-label col-lg-3 col-form-label">Requerimiento del servicio:</label>
                         <div class="col-lg-6">
-                            <textarea type="text" class="form-control" readonly
-                                value="{{curso.req_servicio}}">{{curso.req_servicio}}</textarea>
+                            <textarea type="text" class="form-control"
+                                readonlyvalue="{{curso.req_servicio}}">{{curso.req_servicio}}</textarea>
                         </div>
                     </div>
                 </div>
@@ -159,6 +158,48 @@
                                 </svg>
                                 Atrás
                             </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if lista_preguntas %}
+    <div class="page-body">
+        <div class="container-xl col-lg-7">
+            <div class="card card-md">
+                <div class="card-body">
+                    <div class="space-y-4">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                {% for value in lista_preguntas %}
+                                <div class="col-md-12">
+                                    <h3 class="mb-3" name="pregunta1">{{value.orden}}. {{value.pregunta}}
+                                    </h3>
+                                </div>
+                                <div class="row mb-3">
+                                    {% for resp in value.respuesta %}
+                                    {% if resp == 'Observacion' %}
+                                    <div>
+                                        <textarea class="form-control" name="respuesta{{value.orden}}"
+                                            id="respuesta{{value.orden}}" rows="4"></textarea>
+                                    </div>
+                                    {% else %}
+                                    <div class="col-sm-2">
+                                        <label class="radio">
+                                            <input type="radio" name="respuesta{{value.orden}}"
+                                                id="respuesta{{value.orden}}" value={{resp}}>
+                                            {{resp}}
+                                        </label>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {% endfor %}
+
+                            </div>
                         </div>
                     </div>
                 </div>
