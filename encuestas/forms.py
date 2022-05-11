@@ -35,17 +35,17 @@ class alumnoForm(forms.ModelForm):
         model = alumnoModel
         fields = '__all__'    
         
-class EncuestaCursoForm(forms.ModelForm):
+class EncuestaAlumnoForm(forms.ModelForm):
     class Meta:
         model = encuestaAlumnoModel
         fields = '__all__'
         
-class PreguntaCursoForm(forms.ModelForm):
+class PreguntaAlumnoForm(forms.ModelForm):
     class Meta:
         model = preguntaAlumnoModel
         fields = '__all__'    
 
-class RespuestaCursoForm(forms.ModelForm):
+class RespuestaAlumnoForm(forms.ModelForm):
     class Meta:
         model = respuestaAlumnoModel
         fields = '__all__'  

@@ -1,8 +1,7 @@
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from encuestas.models.cursoEncuestaModel import cursoEncuestaModel
+from encuestas.models.cursoEncuestaSatisfaccionModel import cursoEncuestaSatisfaccionModel
 
 from encuestas.models.cursoModel import cursoModel
 from encuestas.models.respuestaSatisfaccionModel import respuestaSatisfaccionModel
@@ -24,7 +23,7 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
             current_user = request.user
             empresa = empresaModel.objects.get(user=current_user.id)
             curso = cursoModel.objects.get(curso_id=curso_id)
-            curso_encuesta = cursoEncuestaModel.objects.get(curso_id=curso_id,encuesta_id=encuesta_id)
+            curso_encuesta = cursoEncuestaSatisfaccionModel.objects.get(curso_id=curso_id,encuesta_id=encuesta_id)
             encuesta = encuestaSatisfaccionModel.objects.get(encuesta_id=encuesta_id)
         except:
             data = {
@@ -74,23 +73,27 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
                 lista_respuestas = []
                 
                 for value in request.POST:
+                    print(request.POST.get('respuesta9',False))
                     if value.startswith('respuesta'):
                         orden_respuesta = value.split('respuesta')[1]
                         pregunta_resp = preguntas.get(orden=orden_respuesta)
+                        
+                        respuesta_texto = request.POST.get(value,False)
+                        if (respuesta_texto == ''):
+                            respuesta_texto = 'NC'
+                        
                         data_respuesta = {
-                            'respuesta_texto': request.POST.get(value,False),
+                            'respuesta_texto': respuesta_texto,
                             'orden_respuesta': orden_respuesta,
                             'valores_respuesta': pregunta_resp.valor,
                             'pregunta':pregunta_resp.pregunta,
                             'respuesta_valor': obtenerValorRespuesta(request.POST.get(value,False))
                         }
                         lista_respuestas.append(data_respuesta)
-                    
                 
                 for value in lista_respuestas:
-                    # print(value)
+                    
                     if validarRespuestaEncuesta(value['valores_respuesta'],value['respuesta_texto']):
-                        print(validarRespuestaEncuesta(value['valores_respuesta'],value['respuesta_texto']))
                         guardarRespuestaEncuestaSatisfaccion(value,encuesta.encuesta_id,curso.curso_id)
                     else:
                         data = {
@@ -99,6 +102,9 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
                             'status': 400
                         }
                         return render(request, 'error/error.html',data, status=400)
+                    
+                messages.success(request,'La encuesta fue guardada satisfactoriamente')
+                return redirect(to='home')
                 # AUTOMATIZAR ESTO 
                 # valores_respuestas_m = [request.POST.get('respuesta1', False), request.POST.get('respuesta2', False), 
                 #                         request.POST.get('respuesta3', False), request.POST.get('respuesta4', False)]

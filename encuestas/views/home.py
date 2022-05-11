@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 
 from encuestas.models.alumnoCursoModel import alumnoCursoModel
 from encuestas.models.alumnoModel import alumnoModel
-from encuestas.models.cursoEncuestaModel import cursoEncuestaModel
+from encuestas.models.cursoEncuestaSatisfaccionModel import cursoEncuestaSatisfaccionModel
 
 
 from encuestas.models.cursoModel import cursoModel
@@ -25,7 +25,7 @@ def home(request):
             
             lista_encuestas = []
             for item in curso:
-                curso_encuesta = cursoEncuestaModel.objects.filter(curso_id=item.curso_id)
+                curso_encuesta = cursoEncuestaSatisfaccionModel.objects.filter(curso_id=item.curso_id)
                 for value in curso_encuesta:
                     encuesta = encuestaSatisfaccionModel.objects.get(encuesta_id=value.encuesta_id)
 

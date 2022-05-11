@@ -1,7 +1,7 @@
 from django.contrib import messages
 
 from encuestas.models import cursoModel
-from ...forms import RespuestaCursoForm, RespuestaSatisfaccionForm
+from ...forms import RespuestaAlumnoForm, RespuestaSatisfaccionForm
 
 def validarRespuestaEncuesta(valor, respuesta):
     posibles_respuestas = valor.split(',')
@@ -26,6 +26,7 @@ def validarRespuestaEncuesta(valor, respuesta):
 
 
 def guardarRespuestaEncuestaSatisfaccion(data,encuesta,curso):
+    print(data['respuesta_texto'])
     data_resp = {
         'pregunta': data['pregunta'],
         'respuesta_texto': data['respuesta_texto'],
@@ -34,7 +35,7 @@ def guardarRespuestaEncuestaSatisfaccion(data,encuesta,curso):
         'encuesta' : encuesta,
         'curso' : curso
     }
-    # print(data_resp)
+    
     respuesta = RespuestaSatisfaccionForm(data=data_resp)
     if respuesta.is_valid():
         respuesta.save()
@@ -47,15 +48,15 @@ def validarCurso(curso_id,nombre_curso):
 
 def guardarRespuestaEncuestaCurso(pregunta, respuesta, encuesta_id):
     try:
-        data_preg = {
+        data_resp = {
             'pregunta': pregunta,
             'respuesta': respuesta,
             'encuesta_curso': encuesta_id,
         }
 
-        pregunta = RespuestaCursoForm(data=data_preg)
-        if pregunta.is_valid():
-            pregunta.save()
+        respuesta = RespuestaAlumnoForm(data=data_resp)
+        if respuesta.is_valid():
+            respuesta.save()
     except:
         raise
     

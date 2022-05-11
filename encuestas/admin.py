@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from encuestas.forms import empresaForm
 from encuestas.models.alumnoCursoModel import alumnoCursoModel
-from encuestas.models.cursoEncuestaModel import cursoEncuestaModel
+from encuestas.models.cursoEncuestaAlumnoModel import cursoEncuestaAlumnoModel
+from encuestas.models.cursoEncuestaSatisfaccionModel import cursoEncuestaSatisfaccionModel
+from encuestas.models.encuestaAlumnoModel import encuestaAlumnoModel
+from encuestas.models.preguntaAlumnoModel import preguntaAlumnoModel
 
 from .models.userModel import User
 from .models.preguntaSatisfaccionModel import preguntaSatisfaccionModel
@@ -61,17 +63,30 @@ class empresaAdmin(admin.ModelAdmin):
             kwargs["queryset"] = User.objects.filter(es_empresa=True,es_alumno=False)
         return super(empresaAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
     
+class alumnoAdmin(admin.ModelAdmin):
+    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+        if db_field.name == "user":
+            kwargs["queryset"] = User.objects.filter(es_empresa=False,es_alumno=True)
+        return super(alumnoAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+    
 class preguntaSatisfaccionInLine(admin.TabularInline):
     model = preguntaSatisfaccionModel
 
 class encuestaSatisfaccionAdmin(admin.ModelAdmin):
     inlines = [preguntaSatisfaccionInLine]
+    
+class preguntaAlumnoInLine(admin.TabularInline):
+    model = preguntaAlumnoModel
+
+class encuestaAlumnoAdmin(admin.ModelAdmin):
+    inlines = [preguntaAlumnoInLine]
 
 admin.site.register(cursoModel)
 admin.site.register(empresaModel,empresaAdmin)
 admin.site.register(encuestaSatisfaccionModel,encuestaSatisfaccionAdmin)
-admin.site.register(preguntaSatisfaccionModel)
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(alumnoModel)
+admin.site.register(alumnoModel,alumnoAdmin)
 admin.site.register(alumnoCursoModel)
-admin.site.register(cursoEncuestaModel)
+admin.site.register(cursoEncuestaSatisfaccionModel)
+admin.site.register(encuestaAlumnoModel,encuestaAlumnoAdmin)
+admin.site.register(cursoEncuestaAlumnoModel)

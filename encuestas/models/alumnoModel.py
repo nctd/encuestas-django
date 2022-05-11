@@ -12,10 +12,12 @@ class alumnoModel(models.Model):
     nombre = models.CharField(max_length=150,blank=False)
     a_paterno = models.CharField(max_length=150,blank=False)
     a_materno = models.CharField(max_length=150,blank=False)
-    nombre_completo = models.CharField(max_length=150,blank=False)
     correo = models.CharField(max_length=150)
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     # curso = models.ForeignKey(cursoModel,on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"{self.rut} - {self.nombre} {self.a_paterno} {self.a_materno}"
     
     class Meta:
         verbose_name = 'alumno'

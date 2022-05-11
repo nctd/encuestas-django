@@ -10,7 +10,7 @@ from .cursoModel import cursoModel
 class respuestaSatisfaccionModel(models.Model):
     respuesta_id = models.AutoField(primary_key=True)
     pregunta = models.CharField(max_length=250,blank=False)
-    respuesta_texto = models.CharField(max_length=250,blank=False)
+    respuesta_texto = models.CharField(max_length=250,blank=True,default='0')
     respuesta_valor = models.IntegerField(validators=[MaxValueValidator(5),MinValueValidator(0)])
     fecha_respuesta = models.DateTimeField(auto_now=True)
     orden_respuesta = models.IntegerField()
