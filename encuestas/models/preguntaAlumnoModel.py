@@ -11,7 +11,7 @@ class preguntaAlumnoModel(models.Model):
     pregunta = models.CharField(max_length=250,blank=False)
     valor = models.CharField(max_length=250,blank=False)
     orden = models.IntegerField(validators=[MaxValueValidator(100),MinValueValidator(1)])
-    encuesta_curso = models.ForeignKey(encuestaAlumnoModel,on_delete=models.PROTECT)
+    encuesta_curso = models.ForeignKey(encuestaAlumnoModel,on_delete=models.CASCADE)
     
     class Meta:
         verbose_name = 'PreguntaAlumno'

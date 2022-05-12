@@ -1,6 +1,7 @@
 from django.contrib import messages
 
-from encuestas.models import cursoModel
+from encuestas.models import cursoModel, respuestaAlumnoModel
+from encuestas.models.preguntaAlumnoModel import preguntaAlumnoModel
 from ...forms import RespuestaAlumnoForm, RespuestaSatisfaccionForm
 
 def validarRespuestaEncuesta(valor, respuesta):
@@ -26,7 +27,6 @@ def validarRespuestaEncuesta(valor, respuesta):
 
 
 def guardarRespuestaEncuestaSatisfaccion(data,encuesta,curso):
-    print(data['respuesta_texto'])
     data_resp = {
         'pregunta': data['pregunta'],
         'respuesta_texto': data['respuesta_texto'],
@@ -46,20 +46,20 @@ def validarCurso(curso_id,nombre_curso):
         return True 
     return False
 
-def guardarRespuestaEncuestaCurso(pregunta, respuesta, encuesta_id):
-    try:
-        data_resp = {
-            'pregunta': pregunta,
-            'respuesta': respuesta,
-            'encuesta_curso': encuesta_id,
-        }
-
-        respuesta = RespuestaAlumnoForm(data=data_resp)
-        if respuesta.is_valid():
-            respuesta.save()
-    except:
-        raise
+def guardarRespuestaEncuestaAlumno(data,encuesta_alumno,alumno_curso):
+    data_resp = {
+        'pregunta': data['pregunta'],
+        'respuesta_texto': data['respuesta_texto'],
+        'respuesta_valor': data['respuesta_valor'],
+        'orden_respuesta': data['orden_respuesta'],
+        'encuesta_alumno' : encuesta_alumno,
+        'alumno_curso' : alumno_curso
+    }
     
+    respuesta = RespuestaAlumnoForm(data=data_resp)
+    if respuesta.is_valid():
+        respuesta.save()
+
     
 def generarError(render,request,mensaje,status):
     data = {

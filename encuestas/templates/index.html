@@ -34,7 +34,7 @@
                                     <!-- <div class="text-reset" tabindex="-1">Encuesta de Satisfacción
                                         </div> -->
                                     <a href="{% url 'encuesta_satisfaccion' encuesta_id=encuesta.encuesta_id curso_id=encuesta.curso_id %}"
-                                        class="text-reset" tabindex="-1">Encuesta de Satisfacción
+                                        class="text-reset" tabindex="-1">{{encuesta.nombre_encuesta}}
                                     </a>
                                 </td>
                                 <td>
@@ -43,7 +43,7 @@
                                 {% else %}
                                 <td>
                                     <a href="{% url 'encuesta_satisfaccion' encuesta_id=encuesta.encuesta_id curso_id=encuesta.curso_id %}"
-                                        class="text-reset" tabindex="-1">Encuesta de Satisfacción
+                                        class="text-reset" tabindex="-1">{{encuesta.nombre_encuesta}}
                                     </a>
                                 </td>
                                 <td>
@@ -69,10 +69,8 @@
                                 <td>
                                     <!-- <div class="text-reset" tabindex="-1">Encuesta de Satisfacción
                                                                     </div> -->
-                                    <a href="{% url 'encuesta_curso' encuesta.encuesta_id%}" class="text-reset"
-                                        tabindex="-1">Encuesta de
-                                        Satisfacción del alumno
-                                        participante
+                                    <a href="{% url 'encuesta_curso' encuesta_id=encuesta.encuesta_id curso_id=encuesta.curso_id %}"
+                                        class="text-reset" tabindex="-1">{{encuesta.nombre_encuesta}}
                                     </a>
                                 </td>
                                 <td>
@@ -80,10 +78,8 @@
                                 </td>
                                 {% else %}
                                 <td>
-                                    <a href="{% url 'encuesta_curso' encuesta.encuesta_id%}" class="text-reset"
-                                        tabindex="-1">Encuesta de
-                                        Satisfacción del alumno
-                                        participante
+                                    <a href="{% url 'encuesta_curso' encuesta_id=encuesta.encuesta_id curso_id=encuesta.curso_id %}"
+                                        class="text-reset" tabindex="-1">{{encuesta.nombre_encuesta}}
                                     </a>
                                 </td>
                                 <td>

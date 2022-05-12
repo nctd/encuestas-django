@@ -9,6 +9,9 @@ class alumnoCursoModel(models.Model):
     alumno = models.ForeignKey(alumnoModel,on_delete=models.CASCADE)
     curso = models.ForeignKey(cursoModel,on_delete=models.CASCADE)
     
+    def __str__(self):
+        return f"{self.alumno_curso_id} - {self.alumno} - {self.curso}"
+    
     class Meta:
         verbose_name = 'alumno_curso'
         db_table = 'alumno_curso'

@@ -9,6 +9,9 @@ class cursoEncuestaSatisfaccionModel(models.Model):
     curso = models.ForeignKey(cursoModel,on_delete=models.CASCADE)
     encuesta = models.ForeignKey(encuestaSatisfaccionModel,on_delete=models.CASCADE)
     
+    def __str__(self):
+        return f"{self.curso} - {self.encuesta}"
+    
     class Meta:
         verbose_name = 'curso_encuesta_satisfaccion'
         db_table = 'curso_encuesta_satisfaccion'

@@ -9,7 +9,7 @@ from encuestas.models.empresaModel import empresaModel
 from encuestas.models.encuestaSatisfaccionModel import encuestaSatisfaccionModel
 from encuestas.models.preguntaSatisfaccionModel import preguntaSatisfaccionModel
 
-from encuestas.views.utils.utils import guardarRespuestaEncuestaSatisfaccion, obtenerValorRespuesta, validarRespuestaEncuesta
+from encuestas.views.utils.utils import generarError, guardarRespuestaEncuestaSatisfaccion, obtenerValorRespuesta, validarRespuestaEncuesta
 
 
 @login_required(login_url='/auth/login_user')
@@ -44,10 +44,13 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
             #     'status': 400
             # }
             # return render(request, 'error/error.html',data, status=400)
+        try:
+            preguntas = preguntaSatisfaccionModel.objects.filter(encuesta=encuesta.encuesta_id)
+        except:
+            return generarError(render,request,'No se encontraron preguntas asociadas a la encuesta',404)        
 
-        preguntas = preguntaSatisfaccionModel.objects.filter(encuesta=encuesta.encuesta_id)
 
-        if preguntas.count == 0:
+        if preguntas.count() == 0:
             data = {
                 'error_preguntas': 'El curso no tiene una encuesta asociada'
             }
@@ -73,7 +76,6 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
                 lista_respuestas = []
                 
                 for value in request.POST:
-                    print(request.POST.get('respuesta9',False))
                     if value.startswith('respuesta'):
                         orden_respuesta = value.split('respuesta')[1]
                         pregunta_resp = preguntas.get(orden=orden_respuesta)
@@ -90,54 +92,26 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
                             'respuesta_valor': obtenerValorRespuesta(request.POST.get(value,False))
                         }
                         lista_respuestas.append(data_respuesta)
+
+                if len(lista_respuestas) != preguntas.count():
+                    return generarError(render,request,'No se guardaron las respuestas',500)
                 
                 for value in lista_respuestas:
-                    
                     if validarRespuestaEncuesta(value['valores_respuesta'],value['respuesta_texto']):
                         guardarRespuestaEncuestaSatisfaccion(value,encuesta.encuesta_id,curso.curso_id)
                     else:
-                        data = {
-                            'error': True,
-                            'mensaje': 'No se validaron las respuestas en el servidor',
-                            'status': 400
-                        }
-                        return render(request, 'error/error.html',data, status=400)
+                        return generarError(render,request,'No se validaron las respuestas en el servidor',500)
+                        # data = {
+                        #     'error': True,
+                        #     'mensaje': 'No se validaron las respuestas en el servidor',
+                        #     'status': 400
+                        # }
+                        # return render(request, 'error/error.html',data, status=400)
                     
                 messages.success(request,'La encuesta fue guardada satisfactoriamente')
                 return redirect(to='home')
                 # AUTOMATIZAR ESTO 
-                # valores_respuestas_m = [request.POST.get('respuesta1', False), request.POST.get('respuesta2', False), 
-                #                         request.POST.get('respuesta3', False), request.POST.get('respuesta4', False)]
-                # valores_respuestas_sn = [request.POST.get('respuesta5', False), request.POST.get('respuesta6', False),
-                #                         request.POST.get('respuesta7', False), request.POST.get('respuesta8', False)]
-                
-                # pregunta1 = preguntas.get(orden=1).pregunta
-                # pregunta2 = preguntas.get(orden=2).pregunta
-                # pregunta3 = preguntas.get(orden=3).pregunta
-                # pregunta4 = preguntas.get(orden=4).pregunta
-                # pregunta5 = preguntas.get(orden=5).pregunta
-                # pregunta6 = preguntas.get(orden=6).pregunta
-                # pregunta7 = preguntas.get(orden=7).pregunta
-                # pregunta8 = preguntas.get(orden=8).pregunta
-                # pregunta9 = preguntas.get(orden=9).pregunta
 
-                # if(validarRespuestaEncuesta(valores_respuestas_m, 'M') and validarRespuestaEncuesta(valores_respuestas_sn, 'SN')):
-                #     guardarRespuestaEncuestaSatisfaccion(pregunta1, request.POST['respuesta1'], encuesta.encuesta_id,curso.curso_id)
-                #     guardarRespuestaEncuestaSatisfaccion(pregunta2, request.POST['respuesta2'], encuesta.encuesta_id,curso.curso_id)
-                #     guardarRespuestaEncuestaSatisfaccion(pregunta3, request.POST['respuesta3'], encuesta.encuesta_id,curso.curso_id)
-                #     guardarRespuestaEncuestaSatisfaccion(pregunta4, request.POST['respuesta4'], encuesta.encuesta_id,curso.curso_id)
-                #     guardarRespuestaEncuestaSatisfaccion(pregunta5, request.POST['respuesta5'], encuesta.encuesta_id,curso.curso_id)
-                #     guardarRespuestaEncuestaSatisfaccion(pregunta6, request.POST['respuesta6'], encuesta.encuesta_id,curso.curso_id)
-                #     guardarRespuestaEncuestaSatisfaccion(pregunta7, request.POST['respuesta7'], encuesta.encuesta_id,curso.curso_id)
-                #     guardarRespuestaEncuestaSatisfaccion(pregunta8, request.POST['respuesta8'], encuesta.encuesta_id,curso.curso_id)
-                #     guardarRespuestaEncuestaSatisfaccion(pregunta9, request.POST['respuesta9'], encuesta.encuesta_id,curso.curso_id)
-                # else:
-                #     data = {
-                #         'error': True,
-                #         'mensaje': 'No se validaron las respuestas en el servidor',
-                #         'status': 400
-                #     }
-                #     return render(request, 'error/error.html',data, status=400)
         except:
             data = {
                 'error': True,

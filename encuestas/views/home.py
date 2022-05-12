@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 
 from encuestas.models.alumnoCursoModel import alumnoCursoModel
 from encuestas.models.alumnoModel import alumnoModel
+from encuestas.models.cursoEncuestaAlumnoModel import cursoEncuestaAlumnoModel
 from encuestas.models.cursoEncuestaSatisfaccionModel import cursoEncuestaSatisfaccionModel
 
 
@@ -35,6 +36,7 @@ def home(request):
                     data_encuesta = {
                         'estado': estado,
                         'nombre_curso': item.nombre_curso,
+                        'nombre_encuesta': encuesta.nombre,
                         'curso_id': value.curso_id,
                         'encuesta_id': value.encuesta_id
                     }
@@ -58,21 +60,25 @@ def home(request):
     if current_user.es_alumno:
         try:
             alumno = alumnoModel.objects.get(user=current_user.id)
-            alm_cursos = alumnoCursoModel.objects.filter(alumno_id=alumno.alumno_id)
-            
+            alumno_cursos = alumnoCursoModel.objects.filter(alumno_id=alumno.alumno_id)
             lista_encuestas = []
 
-            for item in alm_cursos:
+            for item in alumno_cursos:
+                encuestas_curso = cursoEncuestaAlumnoModel.objects.filter(curso_id=item.curso_id)
                 curso = cursoModel.objects.get(curso_id=item.curso_id)
-                encuesta = encuestaAlumnoModel.objects.get(alumno_curso=item.al_cu_id)
-                estado = respuestaAlumnoModel.objects.filter(encuesta_curso=encuesta.enc_curso_id).exists()
+                for value in encuestas_curso:
+                    encuesta = encuestaAlumnoModel.objects.get(encuesta_alumno_id=value.encuesta_id)
+                    
+                    estado = respuestaAlumnoModel.objects.filter(encuesta_alumno=encuesta.encuesta_alumno_id,alumno_curso=item.alumno_curso_id).exists()
                 
-                data_encuesta = {
-                    'estado': estado,
-                    'nombre_curso': curso.nombre_curso,
-                    'encuesta_id': encuesta.enc_curso_id
-                }
-                lista_encuestas.append(data_encuesta)
+                    data_encuesta = {
+                        'estado': estado,
+                        'nombre_curso': curso.nombre_curso,
+                        'nombre_encuesta': encuesta.nombre,
+                        'curso_id': curso.curso_id,
+                        'encuesta_id': encuesta.encuesta_alumno_id
+                    }
+                    lista_encuestas.append(data_encuesta)
                 
             data = {
                 'lista_encuestas': lista_encuestas,
