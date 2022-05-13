@@ -14,7 +14,7 @@ from encuestas.views.utils.utils import generarError, guardarRespuestaEncuestaSa
 
 @login_required(login_url='/auth/login_user')
 def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
-    # ESTA ENCUESTA, SOLO LA RESPONDEN LAS EMPRESAS
+
     try:
         encuesta_existe = encuestaSatisfaccionModel.objects.filter(encuesta_id=encuesta_id).exists()
         if not encuesta_existe:
@@ -110,7 +110,7 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
                     
                 messages.success(request,'La encuesta fue guardada satisfactoriamente')
                 return redirect(to='home')
-                # AUTOMATIZAR ESTO 
+
 
         except:
             data = {

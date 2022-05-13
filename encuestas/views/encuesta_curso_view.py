@@ -23,6 +23,7 @@ def encuesta_curso_view(request,encuesta_id,curso_id):
             current_user = request.user
             alumno = alumnoModel.objects.get(user_id=current_user.id)
             curso = cursoModel.objects.get(curso_id=curso_id)
+            print(curso.empresa.nombre_empresa)
             curso_encuesta = cursoEncuestaAlumnoModel.objects.get(curso_id=curso_id,encuesta_id=encuesta_id)
             alumno_curso = alumnoCursoModel.objects.get(alumno_id=alumno.alumno_id,curso_id=curso_id)
             encuesta = encuestaAlumnoModel.objects.get(encuesta_alumno_id=encuesta_id)
@@ -107,15 +108,8 @@ def encuesta_curso_view(request,encuesta_id,curso_id):
                 messages.success(request,'La encuesta fue guardada satisfactoriamente')
                 return redirect(to='home')                                    
 
-
         except:
             return generarError(render,request,'No se guardaron las respuestas',400)
-            # data = {
-            #     'error': True,
-            #     'mensaje': 'No se guardaron las respuestas',
-            #     'status': 400
-            # }
-            # return render(request, 'error/error.html',data, status=400)        
         
         return render(request, 'encuestas/encuesta_curso.html', data)
     
