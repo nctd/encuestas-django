@@ -1,3 +1,4 @@
+from msilib.schema import Error
 from django.contrib import messages
 
 from encuestas.models import cursoModel, respuestaAlumnoModel
@@ -6,23 +7,14 @@ from ...forms import RespuestaAlumnoForm, RespuestaSatisfaccionForm
 
 def validarRespuestaEncuesta(valor, respuesta):
     posibles_respuestas = valor.split(',')
+    print(posibles_respuestas)
+    print(respuesta)
     if 'Observacion' in posibles_respuestas:
         return True
     if (respuesta in posibles_respuestas):
         return True
-    return False
-    # if(type_value == 'M'):
-    #     for val in value:
-    #         if(val not in ['Deficiente', 'Malo', 'Regular', 'Bueno', 'Excelente']):
-    #             return False
-    #     else:
-    #         return True
-    # if(type_value == 'SN'):
-    #     for val in value:
-    #         if(val not in ['Si', 'No']):
-    #             return False
-    #     else:
-    #         return True
+    raise Error
+
     # return False
 
 

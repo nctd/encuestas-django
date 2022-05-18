@@ -6,7 +6,7 @@
 
     <div class="container-xl col-lg-7">
         {% if lista_encuestas %}
-        <div class="card card-md">
+        <div class="card card-md mb-3">
             <div class='card-header'>
                 <h3 class="card-title">Encuestas</h3>
             </div>
@@ -109,6 +109,65 @@
             <h4 class="alert-title">Ocurrió un error&hellip;</h4>
             <div class="text-muted">Su cuenta no tiene cursos asociados, por favor contacte al
                 administrador.</div>
+        </div>
+        {% endif %}
+        {% if lista_recepcion %}
+        <div class="card card-md">
+            <div class='card-header'>
+                <h3 class="card-title">Encuestas recepción de servicio</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table card-table table-vcenter text-nowrap datatable">
+
+                        <thead>
+                            <tr>
+                                <th>Curso</th>
+                                <th>Nombre</th>
+                                <th>Estado</th>
+                                <!-- <th></th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if empresa %}
+                            {% for encuesta in lista_recepcion %}
+                            <tr>
+                                <td>
+                                    {{encuesta.nombre_curso}}
+                                </td>
+                                {% if encuesta.estado %}
+                                <td>
+                                    <!-- <div class="text-reset" tabindex="-1">Encuesta de Satisfacción
+                                                                        </div> -->
+                                    <a href="{% url 'encuesta_recepcion_servicio' encuesta_id=encuesta.encuesta_id curso_id=encuesta.curso_id %}"
+                                        class="text-reset" tabindex="-1">{{encuesta.nombre_encuesta}}
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success me-1"></span> Enviada
+                                </td>
+                                {% else %}
+                                <td>
+                                    <a href="{% url 'encuesta_recepcion_servicio' encuesta_id=encuesta.encuesta_id curso_id=encuesta.curso_id %}"
+                                        class="text-reset" tabindex="-1">{{encuesta.nombre_encuesta}}
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-danger me-1"></span> Pendiente
+                                </td>
+                                {% endif %}
+                                <!-- <td class="text-end">
+                                                                        <a href="#" class="btn">
+                                                                            Edit
+                                                                        </a>
+                                                                    </td> -->
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         {% endif %}
     </div>

@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from encuestas.models.empresaModel import empresaModel
 from encuestas.models.respuestaAlumnoModel import respuestaAlumnoModel
+from encuestas.models.respuestaRecepcionServicioModel import respuestaRecepcionServicioModel
 # from django.contrib.auth.models import User
 from .models.userModel import User
 
@@ -61,10 +62,10 @@ class empresaForm(forms.ModelForm):
         model = empresaModel
         fields = '__all__'
         
-        # def __init__(self, *args, **kwargs):
-        #     super(empresaForm, self).__init__(*args, **kwargs)
-        #     self.fields['user'].queryset = User.objects.filter(es_empresa=True,es_alumno=False)
-            
+class RespuestaRecepcionServicioForm(forms.ModelForm):
+    class Meta:
+        model = respuestaRecepcionServicioModel
+        fields = '__all__'             
     
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(

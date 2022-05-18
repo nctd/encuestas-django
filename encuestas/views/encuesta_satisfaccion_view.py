@@ -1,8 +1,9 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from encuestas.models.cursoEncuestaSatisfaccionModel import cursoEncuestaSatisfaccionModel
+from django.db import transaction
 
+from encuestas.models.cursoEncuestaSatisfaccionModel import cursoEncuestaSatisfaccionModel
 from encuestas.models.cursoModel import cursoModel
 from encuestas.models.respuestaSatisfaccionModel import respuestaSatisfaccionModel
 from encuestas.models.empresaModel import empresaModel
@@ -14,7 +15,6 @@ from encuestas.views.utils.utils import generarError, guardarRespuestaEncuestaSa
 
 @login_required(login_url='/auth/login_user')
 def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
-
     try:
         encuesta_existe = encuestaSatisfaccionModel.objects.filter(encuesta_id=encuesta_id).exists()
         if not encuesta_existe:
@@ -65,6 +65,7 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
                 'orden': item.orden
             }
             lista_preguntas.append(pregunta)
+
         data = {
             'curso': curso,
             'encuesta':encuesta,
@@ -81,6 +82,7 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
                         pregunta_resp = preguntas.get(orden=orden_respuesta)
                         
                         respuesta_texto = request.POST.get(value,False)
+                        
                         if (respuesta_texto == ''):
                             respuesta_texto = 'NC'
                         
@@ -93,20 +95,17 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
                         }
                         lista_respuestas.append(data_respuesta)
 
+
                 if len(lista_respuestas) != preguntas.count():
                     return generarError(render,request,'No se guardaron las respuestas',500)
-                
-                for value in lista_respuestas:
-                    if validarRespuestaEncuesta(value['valores_respuesta'],value['respuesta_texto']):
-                        guardarRespuestaEncuestaSatisfaccion(value,encuesta.encuesta_id,curso.curso_id)
-                    else:
-                        return generarError(render,request,'No se validaron las respuestas en el servidor',500)
-                        # data = {
-                        #     'error': True,
-                        #     'mensaje': 'No se validaron las respuestas en el servidor',
-                        #     'status': 400
-                        # }
-                        # return render(request, 'error/error.html',data, status=400)
+
+                with transaction.atomic():                
+                    for value in lista_respuestas:
+                        if validarRespuestaEncuesta(value['valores_respuesta'],value['respuesta_texto']):
+                            guardarRespuestaEncuestaSatisfaccion(value,encuesta.encuesta_id,curso.curso_id)
+                        else:
+                            # raise Error
+                            return generarError(render,request,'No se validaron las respuestas en el servidor',500)
                     
                 messages.success(request,'La encuesta fue guardada satisfactoriamente')
                 return redirect(to='home')
@@ -128,4 +127,4 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
             'mensaje': 'No se cargaron los datos de la encuesta, por favor contacte al administrador',
             'status': 400
         }
-        return render(request, 'error/error.html',data, status=400)
+        return render(request, 'error/error.html',data, status=404)

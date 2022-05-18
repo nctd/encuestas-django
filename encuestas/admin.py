@@ -3,9 +3,12 @@ from django.contrib.auth.admin import UserAdmin
 
 from encuestas.models.alumnoCursoModel import alumnoCursoModel
 from encuestas.models.cursoEncuestaAlumnoModel import cursoEncuestaAlumnoModel
+from encuestas.models.cursoEncuestaRecepcionServicioModel import cursoEncuestaRecepcionServicioModel
 from encuestas.models.cursoEncuestaSatisfaccionModel import cursoEncuestaSatisfaccionModel
 from encuestas.models.encuestaAlumnoModel import encuestaAlumnoModel
+from encuestas.models.encuestaRecepcionServicio import encuestaRecepcionServicioModel
 from encuestas.models.preguntaAlumnoModel import preguntaAlumnoModel
+from encuestas.models.preguntaRecepcionServicio import preguntaRecepcionServicioModel
 
 from .models.userModel import User
 from .models.preguntaSatisfaccionModel import preguntaSatisfaccionModel
@@ -48,9 +51,9 @@ class CustomUserAdmin(UserAdmin):
         (None, {
             'fields': ('username', 'password1', 'password2')
         }),
-        ('Información personal', {
-            'fields': ('first_name', 'last_name')
-        }),
+        # ('Información personal', {
+        #     'fields': ('first_name', 'last_name')
+        # }),
         ('Tipo de usuario', {
             'fields': ('es_empresa', 'es_alumno')
         })
@@ -81,6 +84,12 @@ class preguntaAlumnoInLine(admin.TabularInline):
 class encuestaAlumnoAdmin(admin.ModelAdmin):
     inlines = [preguntaAlumnoInLine]
 
+class preguntaRecepcionServicioInLine(admin.TabularInline):
+    model = preguntaRecepcionServicioModel
+    
+class encuestaRecepcionServicioAdmin(admin.ModelAdmin):
+    inlines = [preguntaRecepcionServicioInLine]
+
 admin.site.register(cursoModel)
 admin.site.register(empresaModel,empresaAdmin)
 admin.site.register(encuestaSatisfaccionModel,encuestaSatisfaccionAdmin)
@@ -90,3 +99,5 @@ admin.site.register(alumnoCursoModel)
 admin.site.register(cursoEncuestaSatisfaccionModel)
 admin.site.register(encuestaAlumnoModel,encuestaAlumnoAdmin)
 admin.site.register(cursoEncuestaAlumnoModel)
+admin.site.register(encuestaRecepcionServicioModel,encuestaRecepcionServicioAdmin)
+admin.site.register(cursoEncuestaRecepcionServicioModel)

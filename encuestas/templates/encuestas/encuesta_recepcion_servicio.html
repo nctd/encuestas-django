@@ -10,7 +10,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col-md-auto">
                     <h2 class="page-title">
-                        Encuesta Satisfacción del Cliente
+                        Encuesta Recepción del Servicio
                     </h2>
                 </div>
 
@@ -99,6 +99,12 @@
                         <label class="form-label col-lg-3 col-form-label">Responsable Exsol:</label>
                         <div class="col-lg-6">
                             <input type="text" class="form-control" readonly value="{{curso.resp_exsol}}">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label class="form-label col-lg-3 col-form-label">Contrato:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" readonly value="{{curso.contrato}}">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -219,55 +225,8 @@
         </div>
     </div>
 </div>
-<!-- <div class="container-xl">
-    <div class="page-header d-print-none">
-        <div class="row align-items-center">
-            <div class="col">
-                <h2 class="page-title">
-                    Bienvenido/a
-                </h2>
-            </div>
 
 
-        </div>
-    </div>
-</div> -->
-<!-- <div class="page-body">
-    <div class="container-xl">
-        <div class="col-12">
-            <div class="card">
-                <div class='card-header'>
-                    <h3 class="card-title">Menú de inicio</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const picker = new Litepicker({
-            element: document.getElementById('fecha-satisfaccion'),
-            autoRefresh: true,
-            format: 'DD/MM/YYYY',
-            lang: 'es-ES',
-            minDate: Date.now(),
-            buttonText: {
-                previousMonth:
-                    `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <polyline points="15 6 9 12 15 18" />
-                            </svg>`,
-                nextMonth:
-                    `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <polyline points="9 6 15 12 9 18" />
-                            </svg>`,
-            },
-        });
-    })
-</script>
 {% if error %}
 <script>
     $(document).ready(function () {

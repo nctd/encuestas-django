@@ -1,7 +1,8 @@
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
+
 from encuestas.models.cursoEncuestaAlumnoModel import cursoEncuestaAlumnoModel
 from encuestas.models.cursoModel import cursoModel
 from encuestas.models.preguntaAlumnoModel import preguntaAlumnoModel
@@ -97,13 +98,15 @@ def encuesta_curso_view(request,encuesta_id,curso_id):
                         lista_respuestas.append(data_respuesta)
 
                 if len(lista_respuestas) != preguntas.count():
+                    
                     return generarError(render,request,'No se guardaron las respuestas',500)
                 
-                for value in lista_respuestas:
-                    if validarRespuestaEncuesta(value['valores_respuesta'],value['respuesta_texto']):
-                        guardarRespuestaEncuestaAlumno(value,encuesta.encuesta_alumno_id,alumno_curso.alumno_curso_id)
-                    else:
-                        return generarError(render,request,'No se validaron las respuestas en el servidor',500)        
+                with transaction.atomic():      
+                    for value in lista_respuestas:
+                        if validarRespuestaEncuesta(value['valores_respuesta'],value['respuesta_texto']):
+                            guardarRespuestaEncuestaAlumno(value,encuesta.encuesta_alumno_id,alumno_curso.alumno_curso_id)
+                        else:
+                            return generarError(render,request,'No se validaron las respuestas en el servidor',500)        
                     
                 messages.success(request,'La encuesta fue guardada satisfactoriamente')
                 return redirect(to='home')                                    
@@ -114,5 +117,5 @@ def encuesta_curso_view(request,encuesta_id,curso_id):
         return render(request, 'encuestas/encuesta_curso.html', data)
     
     except:
-        return generarError(render,request,'No se cargaron los datos de la encuesta, por favor contacte al administrador',400)
+        return generarError(render,request,'No se cargaron los datos de la encuesta, por favor contacte al administrador',404)
 
