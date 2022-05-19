@@ -278,7 +278,7 @@
 
 <script>
     $("#btn-enviar").on('click', function (e) {
-        const largo_lista = "{{ lista_preguntas|length}}" - $('textarea').length
+        const largo_lista = "{{ lista_preguntas|length}}" - ($('textarea').length - 1)
         if ($("input[type='radio']:checked").length < largo_lista) {
             e.preventDefault()
             $("#modal-error").modal('show');

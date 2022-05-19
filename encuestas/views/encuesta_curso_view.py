@@ -56,10 +56,7 @@ def encuesta_curso_view(request,encuesta_id,curso_id):
         
         # BORRAR PROB
         if preguntas.count() == 0:
-            data = {
-                'error_preguntas': 'El alumno no tiene una encuesta asociada'
-            }
-            return render(request,'encuestas/encuesta_curso.html', data)
+            return generarError(render,request,'La encuesta no tiene preguntas asociadas',404)   
 
         lista_preguntas = []
         for item in preguntas:

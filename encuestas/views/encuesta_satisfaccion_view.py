@@ -38,12 +38,7 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
         if respuesta_existe:
             messages.info(request,'La encuesta ya fue enviada')
             return redirect(to='home')
-            # data = {
-            #     'error': True,
-            #     'mensaje': 'La encuesta ya fue contestada',
-            #     'status': 400
-            # }
-            # return render(request, 'error/error.html',data, status=400)
+
         try:
             preguntas = preguntaSatisfaccionModel.objects.filter(encuesta=encuesta.encuesta_id)
         except:
@@ -51,10 +46,7 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
 
 
         if preguntas.count() == 0:
-            data = {
-                'error_preguntas': 'El curso no tiene una encuesta asociada'
-            }
-            return render(request,'encuestas/encuesta_satisfaccion.html', data)
+            return generarError(render,request,'La encuesta no tiene preguntas asociadas',404)   
 
 
         lista_preguntas = []

@@ -9,16 +9,14 @@ from encuestas.models.encuestaAlumnoModel import encuestaAlumnoModel
 from encuestas.models.encuestaRecepcionServicio import encuestaRecepcionServicioModel
 from encuestas.models.preguntaAlumnoModel import preguntaAlumnoModel
 from encuestas.models.preguntaRecepcionServicio import preguntaRecepcionServicioModel
-
 from .models.userModel import User
 from .models.preguntaSatisfaccionModel import preguntaSatisfaccionModel
-
 from .models.encuestaSatisfaccionModel import encuestaSatisfaccionModel
-
 from .models.empresaModel import empresaModel
 from .models.cursoModel import cursoModel
-
 from .models.alumnoModel import alumnoModel
+
+from encuestas.forms import preguntaRecepcionServicioInLineFormSet
 
 class CustomUserAdmin(UserAdmin):
     list_display = (
@@ -74,21 +72,27 @@ class alumnoAdmin(admin.ModelAdmin):
     
 class preguntaSatisfaccionInLine(admin.TabularInline):
     model = preguntaSatisfaccionModel
+    extra=0
 
 class encuestaSatisfaccionAdmin(admin.ModelAdmin):
     inlines = [preguntaSatisfaccionInLine]
     
 class preguntaAlumnoInLine(admin.TabularInline):
     model = preguntaAlumnoModel
+    extra=0
 
 class encuestaAlumnoAdmin(admin.ModelAdmin):
     inlines = [preguntaAlumnoInLine]
 
 class preguntaRecepcionServicioInLine(admin.TabularInline):
     model = preguntaRecepcionServicioModel
-    
+    formset = preguntaRecepcionServicioInLineFormSet
+    extra=0
+
+            
 class encuestaRecepcionServicioAdmin(admin.ModelAdmin):
     inlines = [preguntaRecepcionServicioInLine]
+
 
 admin.site.register(cursoModel)
 admin.site.register(empresaModel,empresaAdmin)

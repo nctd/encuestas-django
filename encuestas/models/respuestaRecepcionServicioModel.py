@@ -15,6 +15,7 @@ class respuestaRecepcionServicioModel(models.Model):
     orden_respuesta = models.IntegerField()
     encuesta_recepcion = models.ForeignKey(encuestaRecepcionServicioModel,on_delete=models.CASCADE)
     curso = models.ForeignKey(cursoModel,on_delete=models.CASCADE)
+    porcentaje = models.IntegerField(validators=[MaxValueValidator(100),MinValueValidator(1)])
     
     class Meta:
         verbose_name = 'RespuestaRecepcionServicio'
