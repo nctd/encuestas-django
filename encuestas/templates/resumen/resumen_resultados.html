@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-body">
+
+    <div class="container-xl col-lg-12">
+        {% if user.is_staff %}
+        <div class="card card-md mb-3">
+            <div class='card-header'>
+                <h3 class="card-title">Resumen de resultados - Encuesta recepcion de servicio</h3>
+            </div>
+            {% for value in encuestas %}
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table card-table table-vcenter text-nowrap datatable">
+                        <thead>
+                            <tr>
+                                <th>N° de contrato</th>
+                                <th>Curso</th>
+                                <th>Cliente</th>
+                                <th>Fecha inicio</th>
+                                <th>Fecha termino</th>
+                                {% for pregunta in value.preguntas %}
+                                <th>{{pregunta}}</th>
+                                {% endfor %}
+                                <th>Porcentaje Satisfacción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for curso in value.cursos %}
+                            <tr>
+                                <td>{{curso.contrato}}</td>
+                                <td>{{curso.nombre_curso}}</td>
+                                <td>{{curso.empresa.nombre_empresa}}</td>
+                                <td>{{curso.fecha_inicio|date:"d/m/Y"}}</td>
+                                <td>{{curso.fecha_termino|date:"d/m/Y"}}</td>
+                                {% for respuesta in value.respuestas %}
+                                {% if respuesta.curso_id == curso.curso_id %}
+                                <td>{{respuesta.respuesta_valor}}</td>
+                                {% endif %}
+                                {% endfor %}
+                                {% for porcentaje in value.porcentajes %}
+                                {% if porcentaje.curso_id == curso.curso_id %}
+                                <td>{{porcentaje.porc}}%</td>
+                                {% endif %}
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-title">Ocurrió un error&hellip;</h4>
+            <div class="text-muted">No se encontraron resultados de encuestas...</div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}

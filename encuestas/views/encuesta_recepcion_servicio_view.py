@@ -2,8 +2,8 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from encuestas.models.cursoEncuestaRecepcionServicioModel import cursoEncuestaRecepcionServicioModel
 
+from encuestas.models.cursoEncuestaRecepcionServicioModel import cursoEncuestaRecepcionServicioModel
 from encuestas.models.cursoModel import cursoModel
 from encuestas.models.empresaModel import empresaModel
 from encuestas.models.encuestaRecepcionServicio import encuestaRecepcionServicioModel

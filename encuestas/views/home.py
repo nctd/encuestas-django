@@ -21,8 +21,13 @@ from encuestas.models.respuestaSatisfaccionModel import respuestaSatisfaccionMod
 @login_required(login_url='/auth/login_user')
 def home(request):
     current_user = request.user
+    print()
+    if current_user.is_superuser:
+        return redirect('resumen_resultados')
+    
     if not current_user.es_empresa and not current_user.es_alumno:
         return redirect('login')
+    
     if current_user.es_empresa:
         try:
             empresa = empresaModel.objects.get(user=current_user.id)

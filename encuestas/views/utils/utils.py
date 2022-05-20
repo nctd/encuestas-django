@@ -99,7 +99,12 @@ def guardarRespuestaEncuestaRecepcionServicio(data,encuesta,curso):
         
 
 def obtenerResultadoRecepcionServicio(encuesta_id,curso_id):
+    preguntas = preguntaRecepcionServicioModel.objects.filter(encuesta_recepcion_id=encuesta_id)
+    esperado = 0
+    esperado = sum((value.porcentaje*5/100) for value in preguntas)
+
     respuestas = respuestaRecepcionServicioModel.objects.filter(curso_id=curso_id,encuesta_recepcion_id=encuesta_id)
     ponderado = 0
     ponderado = sum((value.respuesta_valor*value.porcentaje/100) for value in respuestas)
-    return ponderado
+
+    return round((ponderado*100)/esperado)
