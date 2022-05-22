@@ -6,14 +6,16 @@
 
     <div class="container-xl col-lg-12">
         {% if user.is_staff %}
+        {% if encuestas %}
+        {% for value in encuestas %}
         <div class="card card-md mb-3">
             <div class='card-header'>
-                <h3 class="card-title">Resumen de resultados - Encuesta recepcion de servicio</h3>
+                <h3 class="card-title">Resumen de resultados - Encuesta recepcion de servicio -
+                    {{value.encuesta.nombre}}</h3>
             </div>
-            {% for value in encuestas %}
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table card-table table-vcenter text-nowrap datatable">
+                    <table class="table card-table table-vcenter datatable">
                         <thead>
                             <tr>
                                 <th>N° de contrato</th>
@@ -52,8 +54,65 @@
                     </table>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
+        {% endif %}
+
+        {% if encuestas_alumnos %}
+        {% for value in encuestas_alumnos %}
+        <div class="card card-md mb-3">
+            <div class='card-header'>
+                <h3 class="card-title">Resumen de resultados - Encuesta de Satisfacción del alumno participante -
+                    {{value.encuesta.nombre}}</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table card-table table-vcenter datatable">
+                        <thead>
+                            <tr>
+                                <th>N° de contrato</th>
+                                <th>Curso</th>
+                                <th>Cliente</th>
+                                <th>Fecha inicio</th>
+                                <th>Fecha termino</th>
+                                {% for pregunta in value.preguntas %}
+                                <th>Promedio {{pregunta}}</th>
+                                {% endfor %}
+                                <th>Promedio acumulado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for curso in value.cursos %}
+                            <tr>
+
+                                <td>{{curso.contrato}}</td>
+                                <td>{{curso.nombre_curso}}</td>
+                                <td>{{curso.empresa.nombre_empresa}}</td>
+                                <td>{{curso.fecha_inicio|date:"d/m/Y"}}</td>
+                                <td>{{curso.fecha_termino|date:"d/m/Y"}}</td>
+                                {% for promedio in value.promedios %}
+                                {% if promedio.curso_id == curso.curso_id %}
+                                <td>{{promedio.promedio}}</td>
+                                {% endif %}
+                                {% endfor %}
+                                {% for prom_acm in value.acumulados %}
+                                {% if prom_acm.curso_id == curso.curso_id %}
+                                <td>{{prom_acm.valor}}</td>
+                                {% endif %}
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% endif %}
+
         {% else %}
         <div class="alert alert-danger" role="alert">
             <h4 class="alert-title">Ocurrió un error&hellip;</h4>

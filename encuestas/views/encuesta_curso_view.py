@@ -24,10 +24,10 @@ def encuesta_curso_view(request,encuesta_id,curso_id):
             current_user = request.user
             alumno = alumnoModel.objects.get(user_id=current_user.id)
             curso = cursoModel.objects.get(curso_id=curso_id)
-            print(curso.empresa.nombre_empresa)
             curso_encuesta = cursoEncuestaAlumnoModel.objects.get(curso_id=curso_id,encuesta_id=encuesta_id)
             alumno_curso = alumnoCursoModel.objects.get(alumno_id=alumno.alumno_id,curso_id=curso_id)
             encuesta = encuestaAlumnoModel.objects.get(encuesta_alumno_id=encuesta_id)
+            
             if not alumno_curso.alumno_id == alumno.alumno_id:
                 data = {
                     'error': True,
@@ -48,8 +48,7 @@ def encuesta_curso_view(request,encuesta_id,curso_id):
             messages.info(request,'La encuesta ya fue enviada')
             return redirect(to='home')
         try:
-            preguntas = preguntaAlumnoModel.objects.filter(encuesta_curso=encuesta.encuesta_alumno_id)
-            print(preguntas.count())
+            preguntas = preguntaAlumnoModel.objects.filter(encuesta_alumno=encuesta.encuesta_alumno_id)
         except:
             return generarError(render,request,'No se encontraron preguntas asociadas a la encuesta',404)        
             # return HttpResponse(request,'ERROR AL TRAER PREGUNTAS')
@@ -90,7 +89,7 @@ def encuesta_curso_view(request,encuesta_id,curso_id):
                             'orden_respuesta': orden_respuesta,
                             'valores_respuesta': pregunta_resp.valor,
                             'pregunta':pregunta_resp.pregunta,
-                            'respuesta_valor': obtenerValorRespuesta(request.POST.get(value,False))
+                            'respuesta_valor': obtenerValorRespuesta(request.POST.get(value,False)),
                         }
                         lista_respuestas.append(data_respuesta)
 
@@ -101,7 +100,7 @@ def encuesta_curso_view(request,encuesta_id,curso_id):
                 with transaction.atomic():      
                     for value in lista_respuestas:
                         if validarRespuestaEncuesta(value['valores_respuesta'],value['respuesta_texto']):
-                            guardarRespuestaEncuestaAlumno(value,encuesta.encuesta_alumno_id,alumno_curso.alumno_curso_id)
+                            guardarRespuestaEncuestaAlumno(value,encuesta.encuesta_alumno_id,alumno_curso.alumno_curso_id,curso.curso_id)
                         else:
                             return generarError(render,request,'No se validaron las respuestas en el servidor',500)        
                     

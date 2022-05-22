@@ -3,6 +3,7 @@ from django.db.models.deletion import PROTECT
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 from encuestas.models.alumnoCursoModel import alumnoCursoModel
+from encuestas.models.cursoModel import cursoModel
 
 from .encuestaAlumnoModel import encuestaAlumnoModel
 from .alumnoModel import alumnoModel
@@ -17,7 +18,8 @@ class respuestaAlumnoModel(models.Model):
     orden_respuesta = models.IntegerField()
     encuesta_alumno = models.ForeignKey(encuestaAlumnoModel,on_delete=models.PROTECT)
     alumno_curso = models.ForeignKey(alumnoCursoModel,on_delete=models.CASCADE)
-    # alumno = models.ForeignKey(alumnoModel,on_delete=models.PROTECT)
+    curso = models.ForeignKey(cursoModel,on_delete=models.CASCADE)
+
     
     class Meta:
         verbose_name = 'RespuestaAlumno'

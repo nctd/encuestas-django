@@ -1,11 +1,11 @@
-from msilib.schema import Error
-from django.contrib import messages
+from django.db.models import Avg,Sum
 
 from encuestas.models.cursoModel import cursoModel
 from encuestas.models.cursoEncuestaRecepcionServicioModel import cursoEncuestaRecepcionServicioModel
 from encuestas.models.encuestaRecepcionServicio import encuestaRecepcionServicioModel
 from encuestas.models.preguntaAlumnoModel import preguntaAlumnoModel
 from encuestas.models.preguntaRecepcionServicio import preguntaRecepcionServicioModel
+from encuestas.models.respuestaAlumnoModel import respuestaAlumnoModel
 from encuestas.models.respuestaRecepcionServicioModel import respuestaRecepcionServicioModel
 
 from ...forms import RespuestaAlumnoForm, RespuestaRecepcionServicioForm, RespuestaSatisfaccionForm
@@ -42,14 +42,15 @@ def validarCurso(curso_id,nombre_curso):
         return True 
     return False
 
-def guardarRespuestaEncuestaAlumno(data,encuesta_alumno,alumno_curso):
+def guardarRespuestaEncuestaAlumno(data,encuesta_alumno,alumno_curso,curso):
     data_resp = {
         'pregunta': data['pregunta'],
         'respuesta_texto': data['respuesta_texto'],
         'respuesta_valor': data['respuesta_valor'],
         'orden_respuesta': data['orden_respuesta'],
         'encuesta_alumno' : encuesta_alumno,
-        'alumno_curso' : alumno_curso
+        'alumno_curso' : alumno_curso,
+        'curso':curso
     }
     
     respuesta = RespuestaAlumnoForm(data=data_resp)
@@ -108,3 +109,9 @@ def obtenerResultadoRecepcionServicio(encuesta_id,curso_id):
     ponderado = sum((value.respuesta_valor*value.porcentaje/100) for value in respuestas)
 
     return round((ponderado*100)/esperado)
+
+
+def obtenerPromedioEncuestaAlumno(encuesta_id,curso_id):
+    promedios = respuestaAlumnoModel.objects.filter(curso=curso_id,encuesta_alumno_id=encuesta_id).values('pregunta','curso_id').annotate(promedio=Avg('respuesta_valor'))
+                                                                                                                                        
+    return promedios
