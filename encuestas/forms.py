@@ -104,6 +104,7 @@ class CustomUserCreationForm(UserCreationForm):
 class preguntaRecepcionServicioInLineFormSet(forms.BaseInlineFormSet):
     def clean(self):
         super().clean()
-        total_porcentaje = sum(f.cleaned_data.get('porcentaje') for f in self.forms)
+        print(self.forms)
+        total_porcentaje = sum(int(f.cleaned_data.get('porcentaje')) for f in self.forms)
         if total_porcentaje != 100:
             raise forms.ValidationError("La suma de los porcentajes debe ser 100")

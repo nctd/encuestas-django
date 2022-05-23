@@ -14,7 +14,7 @@ from encuestas.models.preguntaRecepcionServicio import preguntaRecepcionServicio
 from encuestas.models.respuestaAlumnoModel import respuestaAlumnoModel
 
 from encuestas.models.respuestaRecepcionServicioModel import respuestaRecepcionServicioModel
-from encuestas.views.utils.utils import obtenerPromedioEncuestaAlumno, obtenerResultadoRecepcionServicio
+from encuestas.views.utils.utils import obtenerPromedioEncuestaAlumno, obtenerPromedioTotalEncuesta, obtenerResultadoRecepcionServicio
 
 def resumen_resultados_view(request):
     current_user = request.user
@@ -58,12 +58,14 @@ def resumen_resultados_view(request):
         list_cursos = []
         list_promedios = []
         list_prom_acumulados = []
+
         for curso in cursos:
             curso = cursoModel.objects.get(curso_id=curso.curso_id)
             list_cursos.append(curso)
             
             promedio_acumulado =  round(sum((value['promedio']) 
-                                            for value in obtenerPromedioEncuestaAlumno(encuesta.encuesta_alumno_id,curso.curso_id))/preguntas.count(),2)
+                                            for value in obtenerPromedioEncuestaAlumno(encuesta.encuesta_alumno_id,curso.curso_id))/preguntas.count(),1)
+            
             list_prom_acumulados.append({
                 'valor': promedio_acumulado,
                 'curso_id': curso.curso_id
@@ -77,12 +79,22 @@ def resumen_resultados_view(request):
         for respuesta in promedio_respuestas:
             list_respuestas.append(respuesta)
             
+        total_promedios = obtenerPromedioTotalEncuesta(encuesta.encuesta_alumno_id)
+
+        # total_acumulado = round(sum((value['promedio']) 
+        #                                     for value in obtenerPromedioTotalEncuesta(encuesta.encuesta_alumno_id)))
+        # for prom in list_prom_acumulados:
+        #     print(prom['valor'])
+        total_acumulado = sum(prom['valor'] for prom in list_prom_acumulados)
+
         data_table = {
             'encuesta': encuesta,
             'preguntas':preguntas,
             'cursos':list_cursos,
             'promedios':list_promedios,
-            'acumulados':list_prom_acumulados
+            'acumulados':list_prom_acumulados,
+            'total_promedios': total_promedios,
+            'total_acumulado': total_acumulado
         }
         list_encuestas_alumno.append(data_table)
 

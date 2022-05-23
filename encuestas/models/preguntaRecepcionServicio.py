@@ -6,8 +6,12 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 from encuestas.models.encuestaRecepcionServicio import encuestaRecepcionServicioModel
 
-POSIBLES_RESPUESTAS = (('Deficiente,Malo,Regular,Bueno,Excelente','Deficiente,Malo,Regular,Bueno,Excelente'),('Si,No','Si,No'),
-                       ('No aplica,Cumple,Parcialmente,No cumple','No aplica,Cumple,Parcialmente,No cumple'))
+POSIBLES_RESPUESTAS = (('Deficiente,Malo,Regular,Bueno,Excelente','Deficiente,Malo,Regular,Bueno,Excelente'),
+                       ('Si,No','Si,No'),
+                       ('Muy insatisfecho,Insatisfecho,Ni satisfecho ni insatisfecho,Satisfecho,Muy satisfecho',
+                        'Muy insatisfecho,Insatisfecho,Ni satisfecho ni insatisfecho,Satisfecho,Muy satisfecho'),
+                       ('No aplica,Cumple,Parcialmente,No cumple','No aplica,Cumple,Parcialmente,No cumple'),
+                       ('Observacion','Observacion'))
 
 
 class preguntaRecepcionServicioModel(models.Model):
@@ -16,7 +20,7 @@ class preguntaRecepcionServicioModel(models.Model):
     # valor = models.CharField(max_length=250,blank=False)
     valor = models.CharField(choices=POSIBLES_RESPUESTAS,blank=False,max_length=250)
     orden = models.IntegerField(validators=[MaxValueValidator(100),MinValueValidator(1)])
-    porcentaje = models.IntegerField(validators=[MaxValueValidator(100),MinValueValidator(1)])
+    porcentaje = models.IntegerField(validators=[MaxValueValidator(100),MinValueValidator(0)])
     encuesta_recepcion = models.ForeignKey(encuestaRecepcionServicioModel,on_delete=models.CASCADE)
     
     class Meta:

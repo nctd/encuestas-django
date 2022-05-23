@@ -115,3 +115,8 @@ def obtenerPromedioEncuestaAlumno(encuesta_id,curso_id):
     promedios = respuestaAlumnoModel.objects.filter(curso=curso_id,encuesta_alumno_id=encuesta_id).values('pregunta','curso_id').annotate(promedio=Avg('respuesta_valor'))
                                                                                                                                         
     return promedios
+
+def obtenerPromedioTotalEncuesta(encuesta_id):
+    promedios = respuestaAlumnoModel.objects.filter(encuesta_alumno_id=encuesta_id).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
+
+    return promedios
