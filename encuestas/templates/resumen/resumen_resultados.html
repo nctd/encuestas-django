@@ -5,24 +5,91 @@
 <div class="page-body">
 
     <div class="container-xl col-lg-12">
+        {% if user.is_staff %}
 
-
+        <div class="col-md-12 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <form method="GET">
+                        <div class="col-12 p-3">
+                            <div class='row'>
+                                <div class='col-xl-4 mb-3'>
+                                    <label class="form-label">Desde:</label>
+                                    <div class="input-icon">
+                                        <span class="input-icon-addon">
+                                            <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <rect x="4" y="5" width="16" height="16" rx="2" />
+                                                <line x1="16" y1="3" x2="16" y2="7" />
+                                                <line x1="8" y1="3" x2="8" y2="7" />
+                                                <line x1="4" y1="11" x2="20" y2="11" />
+                                                <line x1="11" y1="15" x2="12" y2="15" />
+                                                <line x1="12" y1="15" x2="12" y2="18" />
+                                            </svg>
+                                        </span>
+                                        <input class="form-control" placeholder="Fecha" id="fecha-desde"
+                                            name='fecha-desde' type='text' value="{{fec_inicio}}" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class='col-xl-4 mb-3'>
+                                    <label class="form-label">Hasta:</label>
+                                    <div class="input-icon">
+                                        <span class="input-icon-addon">
+                                            <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <rect x="4" y="5" width="16" height="16" rx="2" />
+                                                <line x1="16" y1="3" x2="16" y2="7" />
+                                                <line x1="8" y1="3" x2="8" y2="7" />
+                                                <line x1="4" y1="11" x2="20" y2="11" />
+                                                <line x1="11" y1="15" x2="12" y2="15" />
+                                                <line x1="12" y1="15" x2="12" y2="18" />
+                                            </svg>
+                                        </span>
+                                        <input class="form-control" placeholder="Fecha" id="fecha-hasta"
+                                            name='fecha-hasta' type='text' value="{{fec_hasta}}" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 mb-3">
+                                    <label class="form-label" style="visibility: hidden;">bt</label>
+                                    <button class="btn btn-primary w-100" id='btn-buscar-fecha' type="submit">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/chart-infographic -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <circle cx="10" cy="10" r="7" />
+                                            <line x1="21" y1="21" x2="15" y2="15" />
+                                        </svg>
+                                        Buscar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% if encuestas %}
         <div class="col-md-12">
             <div class="card">
                 <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
                     <li class="nav-item">
                         <a href="#tabs-home-16" class="nav-link active" data-bs-toggle="tab">
-                            <!-- Download SVG icon from http://tabler-icons.io/i/home -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                 stroke-linecap="round" stroke-linejoin="round">
-                                <desc>Download more icon variants from https://tabler-icons.io/i/home</desc>
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <polyline points="5 12 3 12 12 3 21 12 19 12"></polyline>
-                                <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
-                                <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                                <path
+                                    d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2">
+                                </path>
                             </svg>
-                            Recepción de servicio
+                            <b>Recepción de servicio</b>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -31,12 +98,12 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                 stroke-linecap="round" stroke-linejoin="round">
-                                <desc>Download more icon variants from https://tabler-icons.io/i/user</desc>
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                <path
+                                    d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                </path>
                             </svg>
-                            Satisfacción
+                            <b>Satisfacción</b>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -45,7 +112,6 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                 stroke-linecap="round" stroke-linejoin="round">
-                                <desc>Download more icon variants from https://tabler-icons.io/i/user</desc>
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
                                 <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
@@ -57,9 +123,9 @@
                 <div class="card-body">
                     <div class="tab-content">
                         <div class="tab-pane active show" id="tabs-home-16">
-                            {% if encuestas %}
-                            {% for value in encuestas %}
 
+                            {% for value in encuestas %}
+                            {% if value.cursos %}
                             <div class='card-header'>
                                 <h3 class="card-title">Resumen de resultados - Encuesta recepcion de servicio -
                                     {{value.encuesta.nombre}}</h3>
@@ -88,6 +154,7 @@
                                                 <td>{{curso.empresa.nombre_empresa}}</td>
                                                 <td>{{curso.fecha_inicio|date:"d/m/Y"}}</td>
                                                 <td>{{curso.fecha_termino|date:"d/m/Y"}}</td>
+                                                {% if value.respuestas %}
                                                 {% for respuesta in value.respuestas %}
                                                 {% if respuesta.curso_id == curso.curso_id %}
                                                 <td>{{respuesta.respuesta_valor}}</td>
@@ -98,8 +165,82 @@
                                                 <td>{{porcentaje.porc}}%</td>
                                                 {% endif %}
                                                 {% endfor %}
+                                                {% else %}
+                                                {% for pregunta in value.preguntas %}
+                                                <td>N/A</td>
+                                                {% endfor %}
+                                                <td>N/A</td>
+                                                {% endif %}
                                             </tr>
                                             {% endfor %}
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="tab-pane" id="tabs-profile-16">
+                            {% if encuestas_satisfaccion %}
+                            {% for value in encuestas_satisfaccion %}
+
+                            <div class='card-header'>
+                                <h3 class="card-title">Resumen de resultados - Encuesta Satisfacción del Cliente -
+                                    {{value.encuesta.nombre}}</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table card-table table-vcenter datatable">
+                                        <thead>
+                                            <tr>
+                                                <th>N° de contrato</th>
+                                                <th>Curso</th>
+                                                <th>Cliente</th>
+                                                <th>Fecha inicio</th>
+                                                <th>Fecha termino</th>
+                                                {% for pregunta in value.preguntas %}
+                                                <th>Promedio {{pregunta}}</th>
+                                                {% endfor %}
+                                                <th>Promedio acumulado</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for curso in value.cursos %}
+                                            <tr>
+
+                                                <td>{{curso.contrato}}</td>
+                                                <td>{{curso.nombre_curso}}</td>
+                                                <td>{{curso.empresa.nombre_empresa}}</td>
+                                                <td>{{curso.fecha_inicio|date:"d/m/Y"}}</td>
+                                                <td>{{curso.fecha_termino|date:"d/m/Y"}}</td>
+                                                {% for promedio in value.promedios %}
+                                                {% if promedio.curso_id == curso.curso_id %}
+                                                <td>{{promedio.promedio}}</td>
+                                                {% endif %}
+                                                {% endfor %}
+                                                {% for prom_acm in value.acumulados %}
+                                                {% if prom_acm.curso_id == curso.curso_id %}
+                                                <td>{{prom_acm.valor}}</td>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                            {% endfor %}
+                                            {% if value.total_promedios|length > 0 %}
+                                            <tr>
+                                                <td>TOTAL</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                {% for total in value.total_promedios %}
+                                                <td>{{total.promedio}}</td>
+                                                {% endfor %}
+                                                <td>{{value.total_acumulado}}</td>
+
+                                            </tr>
+                                            {% endif %}
                                         </tbody>
 
                                     </table>
@@ -108,11 +249,6 @@
 
                             {% endfor %}
                             {% endif %}
-                        </div>
-                        <div class="tab-pane" id="tabs-profile-16">
-                            <div>Fringilla egestas nunc quis tellus diam rhoncus ultricies tristique enim at diam, sem
-                                nunc
-                                amet, pellentesque id egestas velit sed</div>
                         </div>
                         <div class="tab-pane" id="tabs-activity-16">
                             {% if encuestas_alumnos %}
@@ -160,6 +296,7 @@
                                                 {% endfor %}
                                             </tr>
                                             {% endfor %}
+                                            {% if value.total_promedios|length > 0 %}
                                             <tr>
                                                 <td>TOTAL</td>
                                                 <td></td>
@@ -172,6 +309,7 @@
                                                 <td>{{value.total_acumulado}}</td>
 
                                             </tr>
+                                            {% endif %}
                                         </tbody>
 
                                     </table>
@@ -186,7 +324,7 @@
             </div>
         </div>
 
-        {% if user.is_staff %}
+
 
 
 
@@ -200,7 +338,91 @@
 
     </div>
 </div>
+<div class="modal modal-blur fade" id="modal-vacio-buscar-fecha" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
 
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24"
+                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 9v2m0 4v.01" />
+                    <path
+                        d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
+                </svg>
+                <h3>Alerta</h3>
+                <div class="text-muted" id='content-error-guardar-retiro'>Debe seleccionar una fecha de inicio y termino
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+
+                        <div class="col"><a href="#" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                                OK
+                            </a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const picker = new Litepicker({
+            element: document.getElementById('fecha-desde'),
+            elementEnd: document.getElementById('fecha-hasta'),
+            autoRefresh: true,
+            format: 'DD/MM/YYYY',
+            lang: 'es-ES',
+            singleMode: false,
+            allowRepick: true,
+            tooltipText: { 'days': 'días' },
+            showTooltip: false,
+            buttonText: {
+                previousMonth:
+                    `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <polyline points="15 6 9 12 15 18" />
+                        </svg>`,
+                nextMonth:
+                    `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <polyline points="9 6 15 12 9 18" />
+                        </svg>`,
+            },
+        });
+    })
+</script>
+
+<script>
+    $("#btn-buscar-fecha").on('click', function (e) {
+        if ($('#fecha-desde').val() == '' || $('#fecha-hasta').val() == '') {
+            e.preventDefault()
+            if ($('#fecha-desde').val() == '') {
+                $('#fecha-desde').addClass('is-invalid');
+            }
+            if ($('#fecha-hasta').val() == '') {
+                $('#fecha-hasta').addClass('is-invalid');
+            }
+            $("#modal-vacio-buscar-fecha").modal('show');
+        }
+    })
+</script>
+
+<script>
+    $("#fecha-desde").on('focus', function (e) {
+        event.stopPropagation();
+        $('#fecha-desde').removeClass("is-invalid");
+    })
+    $("#fecha-hasta").on('focus', function (e) {
+        event.stopPropagation();
+        $('#fecha-hasta').removeClass("is-invalid");
+    })
+</script>
 
 
 

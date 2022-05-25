@@ -7,6 +7,7 @@ from encuestas.models.preguntaAlumnoModel import preguntaAlumnoModel
 from encuestas.models.preguntaRecepcionServicio import preguntaRecepcionServicioModel
 from encuestas.models.respuestaAlumnoModel import respuestaAlumnoModel
 from encuestas.models.respuestaRecepcionServicioModel import respuestaRecepcionServicioModel
+from encuestas.models.respuestaSatisfaccionModel import respuestaSatisfaccionModel
 
 from ...forms import RespuestaAlumnoForm, RespuestaRecepcionServicioForm, RespuestaSatisfaccionForm
 
@@ -80,6 +81,12 @@ def obtenerValorRespuesta(respuesta):
         if respuesta == 'Cumple': valor = 5
         if respuesta == 'Parcialmente': valor = 3
         if respuesta == 'No cumple': valor = 0
+        if respuesta == 'Muy insatisfecho': valor = 1
+        if respuesta == 'Insatisfecho': valor  = 2
+        if respuesta == 'Ni satisfecho ni insatisfecho': valor  = 3
+        if respuesta == 'Satisfecho': valor  = 4
+        if respuesta == 'Muy satisfecho': valor  = 5
+
     return valor 
 
 
@@ -111,12 +118,16 @@ def obtenerResultadoRecepcionServicio(encuesta_id,curso_id):
     return round((ponderado*100)/esperado)
 
 
-def obtenerPromedioEncuestaAlumno(encuesta_id,curso_id):
-    promedios = respuestaAlumnoModel.objects.filter(curso=curso_id,encuesta_alumno_id=encuesta_id).values('pregunta','curso_id').annotate(promedio=Avg('respuesta_valor'))
-                                                                                                                                        
-    return promedios
+def obtenerPromedioEncuesta(encuesta_id,curso_id,tipo):
+    if tipo == 'alumno':
+        return respuestaAlumnoModel.objects.filter(curso=curso_id,encuesta_alumno_id=encuesta_id).values('pregunta','curso_id').annotate(promedio=Avg('respuesta_valor'))
+    if tipo == 'satisfaccion':
+        return respuestaSatisfaccionModel.objects.filter(curso=curso_id,encuesta_id=encuesta_id).values('pregunta','curso_id').annotate(promedio=Avg('respuesta_valor'))
+                                                                                                    
 
-def obtenerPromedioTotalEncuesta(encuesta_id):
-    promedios = respuestaAlumnoModel.objects.filter(encuesta_alumno_id=encuesta_id).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
 
-    return promedios
+def obtenerPromedioTotalEncuesta(encuesta_id,tipo):
+    if tipo == 'alumno':
+        return respuestaAlumnoModel.objects.filter(encuesta_alumno_id=encuesta_id).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
+    if tipo == 'satisfaccion':
+        return respuestaSatisfaccionModel.objects.filter(encuesta_id=encuesta_id).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
