@@ -173,6 +173,21 @@
                                                 {% endif %}
                                             </tr>
                                             {% endfor %}
+                                            {% if value.promedio_puntaje|length > 0 %}
+                                            <tr>
+                                                <td>PROMEDIO</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                {% for total in value.promedio_puntaje %}
+                                                <td>{{total.promedio|floatformat:1}}</td>
+                                                {% endfor %}
+                                                <td>{{value.total_porcentaje|floatformat:0}}%</td>
+
+                                            </tr>
+                                            {% endif %}
+
                                         </tbody>
 
                                     </table>
@@ -184,11 +199,11 @@
                         </div>
                         <div class="tab-pane" id="tabs-profile-16">
                             {% if encuestas_satisfaccion %}
-                            {% for value in encuestas_satisfaccion %}
-
+                            {% for satisf in encuestas_satisfaccion %}
+                            {% if satisf.cursos %}
                             <div class='card-header'>
                                 <h3 class="card-title">Resumen de resultados - Encuesta Satisfacción del Cliente -
-                                    {{value.encuesta.nombre}}</h3>
+                                    {{satisf.encuesta.nombre}}</h3>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -200,44 +215,49 @@
                                                 <th>Cliente</th>
                                                 <th>Fecha inicio</th>
                                                 <th>Fecha termino</th>
-                                                {% for pregunta in value.preguntas %}
-                                                <th>Promedio {{pregunta}}</th>
+                                                {% for pregunta in satisf.preguntas %}
+                                                <th>{{pregunta}}</th>
                                                 {% endfor %}
                                                 <th>Promedio acumulado</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for curso in value.cursos %}
+                                            {% for curso in satisf.cursos %}
                                             <tr>
-
                                                 <td>{{curso.contrato}}</td>
                                                 <td>{{curso.nombre_curso}}</td>
                                                 <td>{{curso.empresa.nombre_empresa}}</td>
                                                 <td>{{curso.fecha_inicio|date:"d/m/Y"}}</td>
                                                 <td>{{curso.fecha_termino|date:"d/m/Y"}}</td>
-                                                {% for promedio in value.promedios %}
-                                                {% if promedio.curso_id == curso.curso_id %}
-                                                <td>{{promedio.promedio}}</td>
+                                                {% if satisf.respuestas %}
+                                                {% for respuesta in satisf.respuestas %}
+                                                {% if respuesta.curso_id == curso.curso_id %}
+                                                <td>{{respuesta.respuesta_valor}}</td>
                                                 {% endif %}
                                                 {% endfor %}
-                                                {% for prom_acm in value.acumulados %}
+                                                {% for prom_acm in satisf.acumulados %}
                                                 {% if prom_acm.curso_id == curso.curso_id %}
                                                 <td>{{prom_acm.valor}}</td>
                                                 {% endif %}
                                                 {% endfor %}
+                                                {% else %}
+                                                {% for pregunta in value.preguntas %}
+                                                <td>N/A</td>
+                                                {% endfor %}
+                                                {% endif %}
                                             </tr>
                                             {% endfor %}
-                                            {% if value.total_promedios|length > 0 %}
+                                            {% if satisf.total_promedios|length > 0 %}
                                             <tr>
-                                                <td>TOTAL</td>
+                                                <td>PROMEDIO</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                {% for total in value.total_promedios %}
-                                                <td>{{total.promedio}}</td>
+                                                {% for total in satisf.total_promedios %}
+                                                <td>{{total.promedio|floatformat:1}}</td>
                                                 {% endfor %}
-                                                <td>{{value.total_acumulado}}</td>
+                                                <td>{{satisf.total_acumulado}}</td>
 
                                             </tr>
                                             {% endif %}
@@ -246,12 +266,13 @@
                                     </table>
                                 </div>
                             </div>
-
+                            {% endif %}
                             {% endfor %}
                             {% endif %}
                         </div>
                         <div class="tab-pane" id="tabs-activity-16">
                             {% if encuestas_alumnos %}
+
                             {% for value in encuestas_alumnos %}
 
                             <div class='card-header'>
@@ -276,6 +297,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+
                                             {% for curso in value.cursos %}
                                             <tr>
 

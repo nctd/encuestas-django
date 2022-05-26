@@ -126,8 +126,16 @@ def obtenerPromedioEncuesta(encuesta_id,curso_id,tipo):
                                                                                                     
 
 
-def obtenerPromedioTotalEncuesta(encuesta_id,tipo):
+def obtenerPromedioTotalEncuesta(encuesta_id,tipo,fecha_desde,fecha_hasta):
     if tipo == 'alumno':
-        return respuestaAlumnoModel.objects.filter(encuesta_alumno_id=encuesta_id).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
+        return respuestaAlumnoModel.objects.filter(encuesta_alumno_id=encuesta_id,
+                                                                    curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
+                                                                    curso__fecha_termino__range=[fecha_desde,fecha_hasta]).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
     if tipo == 'satisfaccion':
-        return respuestaSatisfaccionModel.objects.filter(encuesta_id=encuesta_id).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
+        return respuestaSatisfaccionModel.objects.filter(encuesta_id=encuesta_id,
+                                                                    curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
+                                                                    curso__fecha_termino__range=[fecha_desde,fecha_hasta]).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
+    if tipo == 'recepcion_servicio':
+        return respuestaRecepcionServicioModel.objects.filter(encuesta_recepcion_id=encuesta_id,
+                                                                    curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
+                                                                    curso__fecha_termino__range=[fecha_desde,fecha_hasta]).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
