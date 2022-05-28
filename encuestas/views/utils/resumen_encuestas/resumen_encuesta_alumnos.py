@@ -1,3 +1,4 @@
+from idna import valid_contextj
 from encuestas.models.cursoEncuestaAlumnoModel import cursoEncuestaAlumnoModel
 from encuestas.models.cursoModel import cursoModel
 from encuestas.models.encuestaAlumnoModel import encuestaAlumnoModel
@@ -39,18 +40,19 @@ def obtenerResumenAlumnos(fecha_desde,fecha_hasta):
                     'curso_id': curso.curso_id
                 })
 
+            
                 for value in obtenerPromedioEncuesta(encuesta.encuesta_alumno_id,curso.curso_id,'alumno'):
                     list_promedios.append(value)
-                    
-                print(list_promedios)
-                total_promedios = obtenerPromedioTotalEncuesta(encuesta.encuesta_alumno_id,'alumno',fecha_desde,fecha_hasta)
-                total_acumulado = round(sum(prom['valor'] for prom in list_prom_acumulados)/len(list_prom_acumulados),1)
-        # promedio_respuestas = respuestaAlumnoModel.objects.values('pregunta').annotate(promedio=Sum('respuesta_valor'))
-        # list_respuestas = []
-        # for respuesta in promedio_respuestas:
-        #     list_respuestas.append(respuesta)
+                
+                total_acumulado = round(sum(prom['valor'] for prom in list_prom_acumulados)/len(list_prom_acumulados),2)
 
 
+ 
+    
+            preguntas_promedios = {d['pregunta'] for d in list_promedios}
+            # cursos_promedios= {d['curso_id'] for d in list_promedios}
+            total_promedios = ([{'pregunta':pregunta, 'total': sum(d['promedio'] /cursos.count()
+                                            for d in list_promedios if d['pregunta']==pregunta)} for pregunta in preguntas_promedios])
 
         data_table = {
             'encuesta': encuesta,

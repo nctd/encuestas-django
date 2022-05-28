@@ -1,4 +1,4 @@
-from django.db.models import Avg,Sum
+from django.db.models import Avg,Sum,Count,Value
 
 from encuestas.models.cursoModel import cursoModel
 from encuestas.models.cursoEncuestaRecepcionServicioModel import cursoEncuestaRecepcionServicioModel
@@ -120,7 +120,7 @@ def obtenerResultadoRecepcionServicio(encuesta_id,curso_id):
 
 def obtenerPromedioEncuesta(encuesta_id,curso_id,tipo):
     if tipo == 'alumno':
-        return respuestaAlumnoModel.objects.filter(curso=curso_id,encuesta_alumno_id=encuesta_id).values('pregunta','curso_id').annotate(promedio=Avg('respuesta_valor'))
+        return respuestaAlumnoModel.objects.filter(curso=curso_id,encuesta_alumno_id=encuesta_id).values('pregunta','curso_id').annotate(promedio=Avg('respuesta_valor')).order_by('pregunta')
     if tipo == 'satisfaccion':
         return respuestaSatisfaccionModel.objects.filter(curso=curso_id,encuesta_id=encuesta_id).values('pregunta','curso_id').annotate(promedio=Avg('respuesta_valor'))
                                                                                                     
@@ -131,6 +131,7 @@ def obtenerPromedioTotalEncuesta(encuesta_id,tipo,fecha_desde,fecha_hasta):
         return respuestaAlumnoModel.objects.filter(encuesta_alumno_id=encuesta_id,
                                                                     curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
                                                                     curso__fecha_termino__range=[fecha_desde,fecha_hasta]).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
+    
     if tipo == 'satisfaccion':
         return respuestaSatisfaccionModel.objects.filter(encuesta_id=encuesta_id,
                                                                     curso__fecha_inicio__range=[fecha_desde,fecha_hasta],

@@ -325,8 +325,12 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                {% for total in value.total_promedios %}
-                                                <td>{{total.promedio}}</td>
+                                                {% for pregunta in value.preguntas %}
+                                                {% for val in value.total_promedios %}
+                                                {% if val.pregunta == pregunta %}
+                                                <td>{{val.total}}</td>
+                                                {% endif %}
+                                                {% endfor %}
                                                 {% endfor %}
                                                 <td>{{value.total_acumulado}}</td>
 
