@@ -41,7 +41,7 @@ def encuesta_recepcion_servicio_view(request,encuesta_id,curso_id):
             return generarError(render,request,'La encuesta no tiene preguntas asociadas',404)   
         
         lista_preguntas = []
-        for item in preguntas:
+        for item in preguntas.order_by('orden'):
             pregunta = {
                 'pregunta' : item.pregunta,
                 'respuesta':item.valor.split(','),
@@ -76,6 +76,7 @@ def encuesta_recepcion_servicio_view(request,encuesta_id,curso_id):
                             'respuesta_valor': obtenerValorRespuesta(request.POST.get(value,False)),
                             'porcentaje': pregunta_resp.porcentaje
                         }
+                        print(data_respuesta)
                         lista_respuestas.append(data_respuesta)
                         
                 if len(lista_respuestas) != preguntas.count():

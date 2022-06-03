@@ -8,7 +8,12 @@
         {% if lista_encuestas %}
         <div class="card card-md mb-3">
             <div class='card-header'>
-                <h3 class="card-title">Encuestas</h3>
+                {% if empresa %}
+                <h3 class="card-title">Encuestas Satisfacción del Cliente</h3>
+                {% endif %}
+                {% if alumno %}
+                <h3 class="card-title">Encuestas de Satisfacción del alumno participante</h3>
+                {% endif %}
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -105,11 +110,11 @@
             </div>
         </div>
         {% else %}
-        <div class="alert alert-danger" role="alert">
+        <!-- <div class="alert alert-danger" role="alert">
             <h4 class="alert-title">Ocurrió un error&hellip;</h4>
             <div class="text-muted">Su cuenta no tiene cursos asociados, por favor contacte al
                 administrador.</div>
-        </div>
+        </div> -->
         {% endif %}
         {% if lista_recepcion %}
         <div class="card card-md">

@@ -50,7 +50,7 @@ def encuesta_satisfaccion_view(request,encuesta_id,curso_id):
 
 
         lista_preguntas = []
-        for item in preguntas:
+        for item in preguntas.order_by('orden'):
             pregunta = {
                 'pregunta' : item.pregunta,
                 'respuesta':item.valor.split(','),

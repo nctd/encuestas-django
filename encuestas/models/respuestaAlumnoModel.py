@@ -16,7 +16,7 @@ class respuestaAlumnoModel(models.Model):
     respuesta_valor = models.IntegerField(validators=[MaxValueValidator(5),MinValueValidator(0)])
     fecha_respuesta = models.DateTimeField(auto_now=True)
     orden_respuesta = models.IntegerField()
-    encuesta_alumno = models.ForeignKey(encuestaAlumnoModel,on_delete=models.PROTECT)
+    encuesta_alumno = models.ForeignKey(encuestaAlumnoModel,on_delete=models.CASCADE)
     alumno_curso = models.ForeignKey(alumnoCursoModel,on_delete=models.CASCADE)
     curso = models.ForeignKey(cursoModel,on_delete=models.CASCADE)
 

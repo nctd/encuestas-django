@@ -69,7 +69,9 @@ def generarError(render,request,mensaje,status):
 
 def obtenerValorRespuesta(respuesta):
     valor = 0
-    if(respuesta in ['Deficiente', 'Malo', 'Regular', 'Bueno', 'Excelente', 'Si','No','No aplica','Cumple','Parcialmente','No cumple']):
+    if(respuesta in ['Deficiente','Malo','Regular','Bueno,Excelente''Si,No',
+                     'Muy insatisfecho','Insatisfecho','Ni satisfecho ni insatisfecho','Satisfecho','Muy satisfecho',
+                     'No aplica','Cumple','Parcialmente','No cumple','No aplica','Cumple','Parcialmente','No cumple','Observacion']):
         if respuesta == 'Deficiente': valor = 1
         if respuesta == 'Malo': valor = 2
         if respuesta == 'Regular': valor = 3

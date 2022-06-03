@@ -21,6 +21,8 @@ def obtenerResumenRecepcionServicio(fecha_desde,fecha_hasta):
         list_cursos = []
         list_porcentaje = []
         list_respuestas = []
+        total_promedios_recepcion = []
+        total_porcentaje = []
         for curso in cursos:
             curso = cursoModel.objects.get(curso_id=curso.curso_id)
             if respuestas.filter(curso_id=curso.curso_id).exists():
