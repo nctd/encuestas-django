@@ -1,4 +1,3 @@
-from idna import valid_contextj
 from encuestas.models.cursoEncuestaAlumnoModel import cursoEncuestaAlumnoModel
 from encuestas.models.cursoModel import cursoModel
 from encuestas.models.encuestaAlumnoModel import encuestaAlumnoModel
