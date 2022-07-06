@@ -10,13 +10,18 @@ def obtenerResumenRecepcionServicio(fecha_desde,fecha_hasta):
     encuestas_recepcion = encuestaRecepcionServicioModel.objects.all()
     list_encuestas_recepcion = []
     for value in encuestas_recepcion:
-        preguntas = preguntaRecepcionServicioModel.objects.filter(encuesta_recepcion_id=value.encuesta_recepcion_id).values_list('pregunta',flat=True)
+        preguntas = preguntaRecepcionServicioModel.objects.filter(encuesta_recepcion_id=value.encuesta_recepcion_id).exclude(valor='Observacion').values_list('pregunta',flat=True)
         cursos = cursoEncuestaRecepcionServicioModel.objects.filter(encuesta_recepcion_id=value.encuesta_recepcion_id,
                                                                     curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
                                                                     curso__fecha_termino__range=[fecha_desde,fecha_hasta])
+        
+        
+        obs_preguntas = preguntaRecepcionServicioModel.objects.filter(encuesta_recepcion_id=value.encuesta_recepcion_id).exclude(valor='Observacion').values_list('pregunta',flat=True)
+        preguntas_exclude = [a for a in obs_preguntas]
+        
         respuestas = respuestaRecepcionServicioModel.objects.filter(encuesta_recepcion_id=value.encuesta_recepcion_id,
                                                                     curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
-                                                                    curso__fecha_termino__range=[fecha_desde,fecha_hasta])
+                                                                    curso__fecha_termino__range=[fecha_desde,fecha_hasta]).exclude(pregunta__in=preguntas_exclude)
 
         list_cursos = []
         list_porcentaje = []
@@ -38,7 +43,7 @@ def obtenerResumenRecepcionServicio(fecha_desde,fecha_hasta):
                 }
                 list_porcentaje.append(data_porcentaje)
                 
-                total_promedios_recepcion = obtenerPromedioTotalEncuesta(value.encuesta_recepcion_id,'recepcion_servicio',fecha_desde,fecha_hasta)
+                total_promedios_recepcion = obtenerPromedioTotalEncuesta(value.encuesta_recepcion_id,'recepcion_servicio',fecha_desde,fecha_hasta,preguntas_exclude)
                 total_porcentaje = round(sum(porc['porc'] for porc in list_porcentaje)/len(list_porcentaje),1)
 
 

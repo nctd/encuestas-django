@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-        {% if encuestas %}
+        {% if encuestas or encuestas_satisfaccion or encuestas_alumnos %}
         <div class="col-md-12">
             <div class="card">
                 <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
@@ -272,7 +272,6 @@
                         </div>
                         <div class="tab-pane" id="tabs-activity-16">
                             {% if encuestas_alumnos %}
-
                             {% for value in encuestas_alumnos %}
 
                             <div class='card-header'>

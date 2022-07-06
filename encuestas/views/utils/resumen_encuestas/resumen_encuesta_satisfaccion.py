@@ -13,15 +13,19 @@ def obtenerResumenSatisfaccion(fecha_desde,fecha_hasta):
     list_encuestas_satisfaccion = []
     total_acumulado_satisfaccion = 0
     for encuesta in encuestas_satisfaccion:
-        preguntas = preguntaSatisfaccionModel.objects.filter(encuesta_id=encuesta.encuesta_id).values_list('pregunta',flat=True)
+        preguntas = preguntaSatisfaccionModel.objects.filter(encuesta_id=encuesta.encuesta_id).exclude(valor='Observacion').values_list('pregunta',flat=True)
+
 
         cursos = cursoEncuestaSatisfaccionModel.objects.filter(encuesta_id=encuesta.encuesta_id,
                                                                        curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
                                                                        curso__fecha_termino__range=[fecha_desde,fecha_hasta])
 
+        obs_preguntas = preguntaSatisfaccionModel.objects.filter(encuesta_id=encuesta.encuesta_id,valor='Observacion').values_list('pregunta',flat=True)
+        preguntas_exclude = [a for a in obs_preguntas]
+
         respuestas = respuestaSatisfaccionModel.objects.filter(encuesta_id=encuesta.encuesta_id,
                                                                 curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
-                                                                curso__fecha_termino__range=[fecha_desde,fecha_hasta])
+                                                                curso__fecha_termino__range=[fecha_desde,fecha_hasta]).exclude(pregunta__in=preguntas_exclude)
         
 
 
@@ -42,7 +46,7 @@ def obtenerResumenSatisfaccion(fecha_desde,fecha_hasta):
             if not list_respuestas_satisfaccion == [] and respuestas.filter(curso_id=curso.curso_id).exists():
  
                 promedio_acumulado =  round(sum((value['promedio']) 
-                                                for value in obtenerPromedioEncuesta(encuesta.encuesta_id,curso.curso_id,'satisfaccion'))/preguntas.count(),1)
+                                                for value in obtenerPromedioEncuesta(encuesta.encuesta_id,curso.curso_id,'satisfaccion',preguntas_exclude))/preguntas.count(),1)
                 # print(promedio_acumulado)
                 list_prom_acumulados_satisfaccion.append({
                     'valor': promedio_acumulado,
@@ -54,7 +58,7 @@ def obtenerResumenSatisfaccion(fecha_desde,fecha_hasta):
                 #     list_promedios_satisfaccion.append(value)
 
             
-                total_promedios_satisfaccion = obtenerPromedioTotalEncuesta(encuesta.encuesta_id,'satisfaccion',fecha_desde,fecha_hasta)
+                total_promedios_satisfaccion = obtenerPromedioTotalEncuesta(encuesta.encuesta_id,'satisfaccion',fecha_desde,fecha_hasta,preguntas_exclude)
 
                 total_acumulado_satisfaccion = round(sum(prom['valor'] for prom in list_prom_acumulados_satisfaccion)/len(list_prom_acumulados_satisfaccion),1)
                 

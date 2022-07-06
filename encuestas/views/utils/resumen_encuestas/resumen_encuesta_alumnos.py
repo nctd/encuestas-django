@@ -11,14 +11,18 @@ def obtenerResumenAlumnos(fecha_desde,fecha_hasta):
     list_encuestas_alumno = []
     total_acumulado = 0
     for encuesta in encuestas_alumno:
-        preguntas = preguntaAlumnoModel.objects.filter(encuesta_alumno_id=encuesta.encuesta_alumno_id).values_list('pregunta',flat=True)
+        preguntas = preguntaAlumnoModel.objects.filter(encuesta_alumno_id=encuesta.encuesta_alumno_id).exclude(valor='Observacion').values_list('pregunta',flat=True)
         cursos = cursoEncuestaAlumnoModel.objects.filter(encuesta_id=encuesta.encuesta_alumno_id,
                                                             curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
                                                             curso__fecha_termino__range=[fecha_desde,fecha_hasta])
         
+        
+        obs_preguntas = preguntaAlumnoModel.objects.filter(encuesta_alumno_id=encuesta.encuesta_alumno_id,valor='Observacion').values_list('pregunta',flat=True)
+        preguntas_exclude = [a for a in obs_preguntas]
+        
         respuestas = respuestaAlumnoModel.objects.filter(encuesta_alumno_id=encuesta.encuesta_alumno_id,
                                                         curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
-                                                        curso__fecha_termino__range=[fecha_desde,fecha_hasta])
+                                                        curso__fecha_termino__range=[fecha_desde,fecha_hasta]).exclude(pregunta__in=preguntas_exclude)
         
 
         list_cursos = []
@@ -32,7 +36,7 @@ def obtenerResumenAlumnos(fecha_desde,fecha_hasta):
             
             if respuestas.filter(curso_id=curso.curso_id).exists():
                 promedio_acumulado =  round(sum((value['promedio']) 
-                                                for value in obtenerPromedioEncuesta(encuesta.encuesta_alumno_id,curso.curso_id,'alumno'))/preguntas.count(),1)
+                                                for value in obtenerPromedioEncuesta(encuesta.encuesta_alumno_id,curso.curso_id,'alumno',preguntas_exclude))/preguntas.count(),1)
                 
                 list_prom_acumulados.append({
                     'valor': promedio_acumulado,
@@ -40,7 +44,7 @@ def obtenerResumenAlumnos(fecha_desde,fecha_hasta):
                 })
 
             
-                for value in obtenerPromedioEncuesta(encuesta.encuesta_alumno_id,curso.curso_id,'alumno'):
+                for value in obtenerPromedioEncuesta(encuesta.encuesta_alumno_id,curso.curso_id,'alumno',preguntas_exclude):
                     list_promedios.append(value)
                 
                 total_acumulado = round(sum(prom['valor'] for prom in list_prom_acumulados)/len(list_prom_acumulados),2)

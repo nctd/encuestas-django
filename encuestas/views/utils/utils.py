@@ -69,7 +69,7 @@ def generarError(render,request,mensaje,status):
 
 def obtenerValorRespuesta(respuesta):
     valor = 0
-    if(respuesta in ['Deficiente','Malo','Regular','Bueno,Excelente''Si,No',
+    if(respuesta in ['Deficiente','Malo','Regular','Bueno','Excelente','Si','No',
                      'Muy insatisfecho','Insatisfecho','Ni satisfecho ni insatisfecho','Satisfecho','Muy satisfecho',
                      'No aplica','Cumple','Parcialmente','No cumple','No aplica','Cumple','Parcialmente','No cumple','Observacion']):
         if respuesta == 'Deficiente': valor = 1
@@ -120,25 +120,25 @@ def obtenerResultadoRecepcionServicio(encuesta_id,curso_id):
     return round((ponderado*100)/esperado)
 
 
-def obtenerPromedioEncuesta(encuesta_id,curso_id,tipo):
+def obtenerPromedioEncuesta(encuesta_id,curso_id,tipo,excluir):
     if tipo == 'alumno':
-        return respuestaAlumnoModel.objects.filter(curso=curso_id,encuesta_alumno_id=encuesta_id).values('pregunta','curso_id').annotate(promedio=Avg('respuesta_valor')).order_by('pregunta')
+        return respuestaAlumnoModel.objects.filter(curso=curso_id,encuesta_alumno_id=encuesta_id).values('pregunta','curso_id').annotate(promedio=Avg('respuesta_valor')).exclude(pregunta__in=excluir)
     if tipo == 'satisfaccion':
-        return respuestaSatisfaccionModel.objects.filter(curso=curso_id,encuesta_id=encuesta_id).values('pregunta','curso_id').annotate(promedio=Avg('respuesta_valor'))
+        return respuestaSatisfaccionModel.objects.filter(curso=curso_id,encuesta_id=encuesta_id).values('pregunta','curso_id').annotate(promedio=Avg('respuesta_valor')).exclude(pregunta__in=excluir)
                                                                                                     
 
 
-def obtenerPromedioTotalEncuesta(encuesta_id,tipo,fecha_desde,fecha_hasta):
+def obtenerPromedioTotalEncuesta(encuesta_id,tipo,fecha_desde,fecha_hasta,excluir):
     if tipo == 'alumno':
         return respuestaAlumnoModel.objects.filter(encuesta_alumno_id=encuesta_id,
                                                                     curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
-                                                                    curso__fecha_termino__range=[fecha_desde,fecha_hasta]).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
+                                                                    curso__fecha_termino__range=[fecha_desde,fecha_hasta]).values('pregunta').annotate(promedio=Avg('respuesta_valor')).exclude(pregunta__in=excluir)
     
     if tipo == 'satisfaccion':
         return respuestaSatisfaccionModel.objects.filter(encuesta_id=encuesta_id,
                                                                     curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
-                                                                    curso__fecha_termino__range=[fecha_desde,fecha_hasta]).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
+                                                                    curso__fecha_termino__range=[fecha_desde,fecha_hasta]).values('pregunta').annotate(promedio=Avg('respuesta_valor')).exclude(pregunta__in=excluir)
     if tipo == 'recepcion_servicio':
         return respuestaRecepcionServicioModel.objects.filter(encuesta_recepcion_id=encuesta_id,
                                                                     curso__fecha_inicio__range=[fecha_desde,fecha_hasta],
-                                                                    curso__fecha_termino__range=[fecha_desde,fecha_hasta]).values('pregunta').annotate(promedio=Avg('respuesta_valor'))
+                                                                    curso__fecha_termino__range=[fecha_desde,fecha_hasta]).values('pregunta').annotate(promedio=Avg('respuesta_valor')).exclude(pregunta__in=excluir)
